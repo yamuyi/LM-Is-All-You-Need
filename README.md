@@ -1,9 +1,9 @@
 # LM-Is-All-You-Need
 
-[![GitHub Stars](https://img.shields.io/github/stars/你的用户名/LM-Is-All-You-Need?style=flat-square)](https://github.com/yamuyi/LM-Is-All-You-Need/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/你的用户名/LM-Is-All-You-Need?style=flat-square)](https://github.com/yamuyi/LM-Is-All-You-Need/fork)
-[![Last Commit](https://img.shields.io/github/last-commit/你的用户名/LM-Is-All-You-Need?style=flat-square)](https://github.com/yamuyi/LM-Is-All-You-Need/commits/main)
-[![License](https://img.shields.io/github/license/你的用户名/LM-Is-All-You-Need?style=flat-square)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/yamuyi/LM-Is-All-You-Need?style=flat-square)](https://github.com/yamuyi/LM-Is-All-You-Need/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/yamuyi/LM-Is-All-You-Need?style=flat-square)](https://github.com/yamuyi/LM-Is-All-You-Need/fork)
+[![Last Commit](https://img.shields.io/github/last-commit/yamuyi/LM-Is-All-You-Need?style=flat-square)](https://github.com/yamuyi/LM-Is-All-You-Need/commits/main)
+[![License](https://img.shields.io/github/license/yamuyi/LM-Is-All-You-Need?style=flat-square)](LICENSE)
 
 ## 仓库定位
 

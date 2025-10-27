@@ -17,7 +17,8 @@ Git 是连接本地和 GitHub 的桥梁，必须先装好。
 本地 Git 要和你的 GitHub 账号关联，否则没有上传权限。
 
 1. 打开命令行，输入以下两条命令（把引号里的内容换成你自己的 GitHub 用户名和绑定邮箱）：
-        `# 配置用户名（GitHub 账号的用户名）
+        
+# 配置用户名（GitHub 账号的用户名）
 git config --global user.name "你的GitHub用户名"
 
 # 配置邮箱（GitHub 账号绑定的邮箱）
