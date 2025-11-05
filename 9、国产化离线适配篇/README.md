@@ -2,13 +2,24 @@
 
 ## TODO LIST
 
-* [ ] MindIE
-* [ ] VLLM
+模型服务
+
+* [ ] 推理引擎更新：MindIE、VLLM等
+* [ ] 推理模型更新：Deepseek-V3.1、多模态理解、OCR模型等
+
+项目管理工具
+
+* [ ] GitLab
+* [ ] Wiki
+
+基础科研平台
+
 * [ ] Dify（Dify-Plus）
 * [ ] RagFlow
 * [ ] MinerU
 * [ ] LlamaFactory
 * [ ] DeerFlow
+* [ ] [ Label Studio](https://labelstud.io/)
 
 ## 目录说明
 
