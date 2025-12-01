@@ -41,4 +41,5 @@ fi
 echo "所有操作执行完成！"
 
 # 运行命令
+# git pull origin main
 # ./git-push.sh "加入了html2image_toolkit"

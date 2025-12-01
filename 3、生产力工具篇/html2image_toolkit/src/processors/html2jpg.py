@@ -408,8 +408,74 @@ class HTMLToSegmentedImage:
     #     except Exception as e:
     #         logger.error(f"HTML转长图片失败: {str(e)}", exc_info=True)
     #         return None
+    # def html_to_long_image(self, html_file_path: str | Path, output_path: str | Path) -> Image.Image | None:
+    #     """HTML转长图片"""
+    #     html_file_path = Path(html_file_path)
+    #     output_path = Path(output_path)
+        
+    #     if not html_file_path.exists():
+    #         logger.error(f"HTML文件不存在: {html_file_path}")
+    #         return None
+        
+    #     try:
+    #         # 确保输出目录存在
+    #         output_path.parent.mkdir(parents=True, exist_ok=True)
+            
+    #         html_url = f"file://{html_file_path.absolute()}"
+    #         logger.info(f"加载HTML文件: {html_url}")
+            
+    #         # 先设置一个合理的初始窗口大小
+    #         self.driver.set_window_size(1200, 800)
+    #         self.driver.get(html_url)
+    #         self.driver.implicitly_wait(5)
+            
+    #         # 获取页面实际尺寸，但限制最大宽度
+    #         total_width = self.driver.execute_script("return document.body.scrollWidth")
+    #         total_height = self.driver.execute_script("return document.body.scrollHeight")
+            
+    #         # 限制最大宽度，避免过宽导致两边留白过多
+    #         max_content_width = 1000  # 内容区域最大宽度
+    #         if total_width > max_content_width:
+    #             total_width = max_content_width
+    #             # 通过JavaScript设置页面最大宽度
+    #             self.driver.execute_script(f"""
+    #                 document.body.style.maxWidth = '{max_content_width}px';
+    #                 document.body.style.margin = '0 auto';
+    #                 document.body.style.padding = '20px';
+    #                 // 确保图片和表格居中
+    #                 var images = document.getElementsByTagName('img');
+    #                 for (var i = 0; i < images.length; i++) {{
+    #                     images[i].style.display = 'block';
+    #                     images[i].style.margin = '0 auto';
+    #                 }}
+    #                 var tables = document.getElementsByTagName('table');
+    #                 for (var i = 0; i < tables.length; i++) {{
+    #                     tables[i].style.margin = '0 auto';
+    #                 }}
+    #             """)
+    #             # 重新计算高度
+    #             total_height = self.driver.execute_script("return document.body.scrollHeight")
+            
+    #         logger.info(f"优化后页面尺寸: {total_width} x {total_height}")
+            
+    #         # 调整窗口大小，增加一些边距用于显示阴影等
+    #         self.driver.set_window_size(total_width + 50, total_height + 50)
+    #         import time
+    #         time.sleep(2)  # 等待页面重新渲染
+            
+    #         # 截图并保存
+    #         screenshot = self.driver.get_screenshot_as_png()
+    #         image = Image.open(BytesIO(screenshot))
+    #         image.save(output_path, quality=95)
+    #         logger.info(f"长图片保存成功: {output_path}")
+    #         return image
+        
+    #     except Exception as e:
+    #         logger.error(f"HTML转长图片失败: {str(e)}", exc_info=True)
+    #         return None
+
     def html_to_long_image(self, html_file_path: str | Path, output_path: str | Path) -> Image.Image | None:
-        """HTML转长图片"""
+        """HTML转长图片 - 修复版本"""
         html_file_path = Path(html_file_path)
         output_path = Path(output_path)
         
@@ -424,55 +490,182 @@ class HTMLToSegmentedImage:
             html_url = f"file://{html_file_path.absolute()}"
             logger.info(f"加载HTML文件: {html_url}")
             
-            # 先设置一个合理的初始窗口大小
+            # 设置初始窗口大小
             self.driver.set_window_size(1200, 800)
             self.driver.get(html_url)
-            self.driver.implicitly_wait(5)
             
-            # 获取页面实际尺寸，但限制最大宽度
-            total_width = self.driver.execute_script("return document.body.scrollWidth")
-            total_height = self.driver.execute_script("return document.body.scrollHeight")
+            # 等待页面完全加载
+            self.driver.implicitly_wait(10)
+            import time
+            time.sleep(3)  # 额外等待时间确保所有资源加载
             
-            # 限制最大宽度，避免过宽导致两边留白过多
-            max_content_width = 1000  # 内容区域最大宽度
+            # 使用多种方式获取准确的高度
+            total_height = self._get_accurate_page_height()
+            total_width = self._get_accurate_page_width()
+            
+            logger.info(f"计算后页面尺寸: {total_width} x {total_height}")
+            
+            if total_height <= 0 or total_width <= 0:
+                logger.error("无法获取有效的页面尺寸")
+                return None
+                
+            # 限制最大宽度，避免过宽
+            max_content_width = 1000
             if total_width > max_content_width:
                 total_width = max_content_width
                 # 通过JavaScript设置页面最大宽度
                 self.driver.execute_script(f"""
-                    document.body.style.maxWidth = '{max_content_width}px';
-                    document.body.style.margin = '0 auto';
-                    document.body.style.padding = '20px';
-                    // 确保图片和表格居中
-                    var images = document.getElementsByTagName('img');
-                    for (var i = 0; i < images.length; i++) {{
-                        images[i].style.display = 'block';
-                        images[i].style.margin = '0 auto';
-                    }}
-                    var tables = document.getElementsByTagName('table');
-                    for (var i = 0; i < tables.length; i++) {{
-                        tables[i].style.margin = '0 auto';
+                    var body = document.body;
+                    var html = document.documentElement;
+                    body.style.maxWidth = '{max_content_width}px';
+                    body.style.margin = '0 auto';
+                    body.style.padding = '20px';
+                    html.style.maxWidth = '{max_content_width}px';
+                    
+                    // 确保所有元素居中
+                    var allElements = document.querySelectorAll('*');
+                    for (var i = 0; i < allElements.length; i++) {{
+                        var element = allElements[i];
+                        if (element.tagName === 'IMG' || element.tagName === 'TABLE') {{
+                            element.style.display = 'block';
+                            element.style.margin = '0 auto';
+                        }}
                     }}
                 """)
                 # 重新计算高度
-                total_height = self.driver.execute_script("return document.body.scrollHeight")
+                time.sleep(2)
+                total_height = self._get_accurate_page_height()
             
-            logger.info(f"优化后页面尺寸: {total_width} x {total_height}")
+            # 设置浏览器窗口大小（稍微大一点确保完全显示）
+            self.driver.set_window_size(total_width + 100, min(total_height + 100, 32767))  # Chrome最大高度限制
             
-            # 调整窗口大小，增加一些边距用于显示阴影等
-            self.driver.set_window_size(total_width + 50, total_height + 50)
-            import time
-            time.sleep(2)  # 等待页面重新渲染
+            # 再次等待渲染
+            time.sleep(2)
             
-            # 截图并保存
+            # 使用Selenium的完整页面截图
             screenshot = self.driver.get_screenshot_as_png()
             image = Image.open(BytesIO(screenshot))
+            
+            # 验证截图是否完整
+            if image.height < total_height * 0.8:  # 如果截图高度远小于页面高度
+                logger.warning(f"截图可能不完整: 截图高度={image.height}, 页面高度={total_height}")
+                # 尝试滚动截图方式
+                image = self._take_scrolling_screenshot(total_height)
+            
             image.save(output_path, quality=95)
-            logger.info(f"长图片保存成功: {output_path}")
+            logger.info(f"长图片保存成功: {output_path}, 尺寸: {image.size}")
             return image
         
         except Exception as e:
             logger.error(f"HTML转长图片失败: {str(e)}", exc_info=True)
             return None
+
+    def _get_accurate_page_height(self) -> int:
+        """获取准确的页面高度"""
+        try:
+            # 尝试多种方法获取高度
+            heights = []
+            
+            # 方法1: body scrollHeight
+            body_height = self.driver.execute_script("return document.body.scrollHeight")
+            heights.append(body_height)
+            
+            # 方法2: documentElement scrollHeight
+            doc_height = self.driver.execute_script("return document.documentElement.scrollHeight")
+            heights.append(doc_height)
+            
+            # 方法3: 取body和documentElement的最大值
+            max_height = self.driver.execute_script(
+                "return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, "
+                "document.body.offsetHeight, document.documentElement.offsetHeight, "
+                "document.body.clientHeight, document.documentElement.clientHeight)"
+            )
+            heights.append(max_height)
+            
+            # 方法4: 获取所有元素的最大底部位置
+            max_bottom = self.driver.execute_script("""
+                var all = document.querySelectorAll('*');
+                var max = 0;
+                for (var i = 0; i < all.length; i++) {
+                    var rect = all[i].getBoundingClientRect();
+                    var bottom = rect.bottom + window.pageYOffset;
+                    if (bottom > max) max = bottom;
+                }
+                return max;
+            """)
+            heights.append(max_bottom)
+            
+            # 返回最大值
+            accurate_height = max(heights)
+            logger.debug(f"高度计算: body={body_height}, doc={doc_height}, max={max_height}, elements={max_bottom}, 最终={accurate_height}")
+            
+            return accurate_height
+            
+        except Exception as e:
+            logger.warning(f"获取页面高度时出错: {e}, 使用备用方法")
+            return self.driver.execute_script("return document.body.scrollHeight")
+
+    def _get_accurate_page_width(self) -> int:
+        """获取准确的页面宽度"""
+        try:
+            widths = []
+            
+            # 多种方法获取宽度
+            body_width = self.driver.execute_script("return document.body.scrollWidth")
+            doc_width = self.driver.execute_script("return document.documentElement.scrollWidth")
+            max_width = self.driver.execute_script(
+                "return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth)"
+            )
+            
+            widths.extend([body_width, doc_width, max_width])
+            return max(widths)
+            
+        except Exception as e:
+            logger.warning(f"获取页面宽度时出错: {e}")
+            return 1200  # 默认宽度
+
+    def _take_scrolling_screenshot(self, total_height: int) -> Image.Image:
+        """使用滚动方式截图（备用方法）"""
+        try:
+            logger.info("使用滚动截图方式")
+            
+            viewport_height = self.driver.execute_script("return window.innerHeight")
+            slices = []
+            offset = 0
+            
+            while offset < total_height:
+                # 滚动到当前位置
+                self.driver.execute_script(f"window.scrollTo(0, {offset});")
+                import time
+                time.sleep(0.5)  # 等待滚动完成
+                
+                # 截取当前视图
+                screenshot = self.driver.get_screenshot_as_png()
+                slice_img = Image.open(BytesIO(screenshot))
+                slices.append(slice_img)
+                
+                offset += viewport_height
+            
+            # 合并所有切片
+            if slices:
+                total_width = slices[0].width
+                combined_image = Image.new('RGB', (total_width, total_height))
+                y_offset = 0
+                
+                for slice_img in slices:
+                    combined_image.paste(slice_img, (0, y_offset))
+                    y_offset += slice_img.height
+                    # 如果已经达到总高度，停止粘贴
+                    if y_offset >= total_height:
+                        break
+                
+                return combined_image
+            else:
+                raise Exception("无法获取任何截图切片")
+                
+        except Exception as e:
+            logger.error(f"滚动截图失败: {e}")
+            raise
 
     def add_watermark(self, image: Image.Image, watermark_text: str, **kwargs) -> Image.Image:
         """统一水印接口（支持多种样式）"""

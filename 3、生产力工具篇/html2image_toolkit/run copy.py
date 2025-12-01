@@ -1,14 +1,16 @@
 import click
 from pathlib import Path
 from src.utils.log_utils import logger
-from src.utils.file_utils import list_files_in_dir, get_output_path
+from src.utils.file_utils import list_files_in_dir
 from src.converters.mhtml2html import convert_mhtml_to_html
 from src.converters.html2md import convert_html_to_md
 from src.converters.md2html import convert_md_to_html
 from src.processors.html2jpg import HTMLToSegmentedImage
+from src.processors.md_cleaner import clean_markdown_content
+from src.processors.image_watermark_remover import watermark_remover
 from src.config import (
-    MHTML_INPUT_DIR, HTML_INPUT_DIR, MD_INPUT_DIR, HTML_OUTPUT_DIR,
-    DEFAULT_WATERMARK, WORKING_MD_DIR
+    MHTML_INPUT_DIR, HTML_INPUT_DIR, MD_INPUT_DIR,
+    DEFAULT_WATERMARK
 )
 
 # 命令组
@@ -153,13 +155,225 @@ def cmd_html2jpg(input: Path, batch: bool, watermark: str, style: str, segment_h
     finally:
         processor.close()
 
-# 5. 流程1：MHTML/HTML -> Markdown（供用户编辑）
+# 5. 完整流程：MHTML -> HTML -> MD -> HTML -> 带水印图片
+# @cli.command(name="full-process")
+# @click.option("--input", "-i", type=Path, required=True, help="单个MHTML文件路径")
+# @click.option("--watermark", "-w", default=DEFAULT_WATERMARK['text'], help="水印文字")
+# def cmd_full_process(input: Path, watermark: str):
+#     """完整流程：MHTML -> HTML -> MD -> HTML -> 带水印切分图片"""
+#     if not input.exists() or input.suffix.lower() not in [".mhtml", ".mht"]:
+#         click.echo("请指定有效的MHTML文件")
+#         return
+    
+#     try:
+#         logger.info("=== 开始完整流程处理 ===")
+        
+#         # 1. MHTML -> HTML
+#         html1 = convert_mhtml_to_html(input)
+#         if not html1:
+#             raise Exception("MHTML转HTML失败")
+        
+#         # 2. HTML -> MD
+#         md = convert_html_to_md(html1)
+#         if not md:
+#             raise Exception("HTML转MD失败")
+        
+#         # 3. MD -> HTML（美化后）
+#         html2 = convert_md_to_html(md)
+#         if not html2:
+#             raise Exception("MD转HTML失败")
+        
+#         # 4. HTML -> 带水印图片
+#         processor = HTMLToSegmentedImage()
+#         result = processor.process_html(html2, watermark_text=watermark)
+#         processor.close()
+        
+#         if result:
+#             click.echo("\n🎉 完整流程处理成功！")
+#             click.echo(f"📁 最终切分图片: {result['segments_dir']}")
+#             click.echo(f"📊 共生成 {result['segment_count']} 个片段")
+#         else:
+#             raise Exception("HTML转图片失败")
+    
+#     except Exception as e:
+#         logger.error(f"完整流程处理失败: {str(e)}", exc_info=True)
+#         click.echo(f"\n❌ 处理失败: {str(e)}")
+
+# 6. Markdown内容清理
+@cli.command(name="clean-md")
+@click.option("--input", "-i", type=Path, help="单个Markdown文件路径")
+@click.option("--batch", is_flag=True, help="批量处理input/md目录下的所有Markdown文件")
+@click.option("--remove-image-watermark", is_flag=True, help="同时去除图片水印")
+def cmd_clean_md(input: Path, batch: bool, remove_image_watermark: bool):
+    """使用本地Ollama模型清理Markdown内容（去除无关内容+图片水印）"""
+    files = []
+    if batch:
+        files = list_files_in_dir(MD_INPUT_DIR, [".md", ".markdown"])
+    elif input and input.exists():
+        files = [input]
+    else:
+        click.echo("请指定--input单个文件或--batch批量处理")
+        return
+    
+    success_count = 0
+    for file in files:
+        try:
+            logger.info(f"开始清理Markdown: {file}")
+            
+            # 读取原始内容
+            original_content = file.read_text(encoding='utf-8')
+            
+            # 使用Ollama清理文本内容
+            cleaned_content = clean_markdown_content(original_content, file)
+            
+            if cleaned_content and cleaned_content != original_content:
+                # 保存清理后的内容
+                file.write_text(cleaned_content, encoding='utf-8')
+                
+                # 如果需要去除图片水印
+                if remove_image_watermark:
+                    # 假设图片在相同目录的images文件夹中
+                    images_dir = file.parent / "images"
+                    if images_dir.exists():
+                        watermark_remover.remove_watermarks_from_md_images(file, images_dir)
+                
+                success_count += 1
+                click.echo(f"✅ 清理成功: {file}")
+            else:
+                click.echo(f"⚠️ 内容无变化: {file}")
+                
+        except Exception as e:
+            logger.error(f"Markdown清理失败 {file}: {str(e)}", exc_info=True)
+            click.echo(f"❌ 清理失败: {file}")
+    
+    click.echo(f"\n清理完成: 成功 {success_count}/{len(files)} 个文件")
+
+# @cli.command(name="full-process")
+# @click.option("--input", "-i", type=Path, required=True, help="单个MHTML文件路径")
+# @click.option("--watermark", "-w", default=DEFAULT_WATERMARK['text'], help="水印文字")
+# @click.option("--optimize", is_flag=True, help="优化HTML布局用于截图")
+# def cmd_full_process(input: Path, watermark: str, optimize: bool):
+#     """完整流程：MHTML -> HTML -> MD -> HTML -> 带水印切分图片"""
+#     if not input.exists() or input.suffix.lower() not in [".mhtml", ".mht"]:
+#         click.echo("请指定有效的MHTML文件")
+#         return
+    
+#     try:
+#         logger.info("=== 开始完整流程处理 ===")
+        
+#         # 1. MHTML -> HTML
+#         html1 = convert_mhtml_to_html(input)
+#         if not html1:
+#             raise Exception("MHTML转HTML失败")
+#         # import pdb
+#         # pdb.set_trace()
+#         # 2. HTML -> MD
+#         md = convert_html_to_md(html1)
+#         if not md:
+#             raise Exception("HTML转MD失败")
+#         # pdb.set_trace()
+#         # 3. MD -> HTML（美化后）
+#         html2 = convert_md_to_html(md)
+#         if not html2:
+#             raise Exception("MD转HTML失败")
+#         # pdb.set_trace()
+#         # 4. 可选：优化HTML布局
+#         final_html = html2
+#         if optimize:
+#             from src.processors.html_optimizer import optimize_html_for_screenshot
+#             final_html = optimize_html_for_screenshot(html2)
+        
+#         # 5. HTML -> 带水印图片
+#         processor = HTMLToSegmentedImage()
+#         result = processor.process_html(final_html, watermark_text=watermark)
+#         processor.close()
+        
+#         if result:
+#             click.echo("\n🎉 完整流程处理成功！")
+#             click.echo(f"📁 最终切分图片: {result['segments_dir']}")
+#             click.echo(f"📊 共生成 {result['segment_count']} 个片段")
+#         else:
+#             raise Exception("HTML转图片失败")
+    
+#     except Exception as e:
+#         logger.error(f"完整流程处理失败: {str(e)}", exc_info=True)
+#         click.echo(f"\n❌ 处理失败: {str(e)}")
+
+@cli.command(name="full-process")
+@click.option("--input", "-i", type=Path, required=True, help="单个MHTML文件路径")
+@click.option("--watermark", "-w", default=DEFAULT_WATERMARK['text'], help="水印文字")
+@click.option("--optimize", is_flag=True, help="优化HTML布局用于截图")
+@click.option("--clean-md", is_flag=True, help="清理Markdown内容（去除无关内容）")
+@click.option("--remove-image-watermark", is_flag=True, help="去除图片水印")
+def cmd_full_process(input: Path, watermark: str, optimize: bool, clean_md: bool, remove_image_watermark: bool):
+    """完整流程：MHTML -> HTML -> MD -> [清理MD] -> HTML -> 带水印切分图片"""
+    if not input.exists() or input.suffix.lower() not in [".mhtml", ".mht"]:
+        click.echo("请指定有效的MHTML文件")
+        return
+    
+    try:
+        logger.info("=== 开始完整流程处理 ===")
+        
+        # 1. MHTML -> HTML
+        html1 = convert_mhtml_to_html(input)
+        if not html1:
+            raise Exception("MHTML转HTML失败")
+        
+        # 2. HTML -> MD
+        md = convert_html_to_md(html1)
+        if not md:
+            raise Exception("HTML转MD失败")
+        
+        # 新增：3. 清理Markdown内容
+        if clean_md:
+            logger.info("=== 开始清理Markdown内容 ===")
+            md_content = md.read_text(encoding='utf-8')
+            cleaned_content = clean_markdown_content(md_content, md)
+            
+            if cleaned_content and cleaned_content != md_content:
+                md.write_text(cleaned_content, encoding='utf-8')
+                logger.info("Markdown内容清理完成")
+            
+            # 新增：去除图片水印
+            if remove_image_watermark:
+                logger.info("=== 开始去除图片水印 ===")
+                # 假设图片在Markdown文件同级的images目录中
+                images_dir = md.parent / "images"
+                if images_dir.exists():
+                    watermark_remover.remove_watermarks_from_md_images(md, images_dir)
+        
+        # 4. MD -> HTML（美化后）
+        html2 = convert_md_to_html(md)
+        if not html2:
+            raise Exception("MD转HTML失败")
+        
+        # 5. 可选：优化HTML布局
+        final_html = html2
+        if optimize:
+            from src.processors.html_optimizer import optimize_html_for_screenshot
+            final_html = optimize_html_for_screenshot(html2)
+        
+        # 6. HTML -> 带水印图片
+        processor = HTMLToSegmentedImage()
+        result = processor.process_html(final_html, watermark_text=watermark)
+        processor.close()
+        
+        if result:
+            click.echo("\n🎉 完整流程处理成功！")
+            click.echo(f"📁 最终切分图片: {result['segments_dir']}")
+            click.echo(f"📊 共生成 {result['segment_count']} 个片段")
+        else:
+            raise Exception("HTML转图片失败")
+    
+    except Exception as e:
+        logger.error(f"完整流程处理失败: {str(e)}", exc_info=True)
+        click.echo(f"\n❌ 处理失败: {str(e)}")
+
 @cli.command(name="export-md")
 @click.option("--input", "-i", type=Path, help="单个HTML/MHTML文件路径")
 @click.option("--batch", is_flag=True, help="批量处理：HTML（input/html）、MHTML（input/mhtml）")
-@click.option("--no-download", is_flag=True, help="不下载远程图片")
-def cmd_export_md(input: Path, batch: bool, no_download: bool):
-    """流程1：将HTML/MHTML转换为Markdown（供用户手动编辑）"""
+def cmd_export_md(input: Path, batch: bool):
+    """导出Markdown到工作目录（供手动编辑）：data/working/md/"""
     files = []
     if batch:
         # 批量处理input/html和input/mhtml目录下的所有文件
@@ -196,7 +410,7 @@ def cmd_export_md(input: Path, batch: bool, no_download: bool):
             result = convert_html_to_md(
                 html_file=html_file,
                 output_md_file=edited_md_path,
-                download_images=not no_download
+                download_images=True
             )
             
             if result:
@@ -213,7 +427,6 @@ def cmd_export_md(input: Path, batch: bool, no_download: bool):
     click.echo(f"📌 手动编辑Markdown文件后，放入：{WORKING_MD_DIR}")
     click.echo(f"📌 下一步执行：python run.py process-edited-md")
 
-# 6. 流程2：Markdown -> HTML -> 图片（处理编辑后的Markdown）
 @cli.command(name="process-edited-md")
 @click.option("--input", "-i", type=Path, help="单个手动编辑后的MD文件路径（可选）")
 @click.option("--batch", is_flag=True, help="批量处理工作目录下的所有MD：data/working/md/")
@@ -223,10 +436,8 @@ def cmd_export_md(input: Path, batch: bool, no_download: bool):
               help="水印样式")
 @click.option("--segment-height", "-h", default=DEFAULT_WATERMARK['segment_height'], 
               help="每段图片高度")
-@click.option("--optimize", is_flag=True, help="优化HTML布局用于截图")
-def cmd_process_edited_md(input: Path, batch: bool, watermark: str, style: str, 
-                         segment_height: int, optimize: bool):
-    """流程2：处理手动编辑后的Markdown：MD -> HTML -> 带水印切分图片"""
+def cmd_process_edited_md(input: Path, batch: bool, watermark: str, style: str, segment_height: int):
+    """处理手动编辑后的Markdown：MD -> HTML -> 带水印切分图片"""
     files = []
     if batch:
         # 批量处理工作目录下的所有MD文件
@@ -263,13 +474,7 @@ def cmd_process_edited_md(input: Path, batch: bool, watermark: str, style: str,
                 click.echo(f"❌ 处理失败: {md_file}（MD转HTML失败）")
                 continue
             
-            # 步骤2：可选优化HTML布局
-            final_html = html_result
-            if optimize:
-                from src.processors.html_optimizer import optimize_html_for_screenshot
-                final_html = optimize_html_for_screenshot(html_result)
-            
-            # 步骤3：HTML转带水印的切分图片
+            # 步骤2：HTML转带水印的切分图片
             watermark_kwargs = {
                 'watermark_text': watermark,
                 'style': style,
@@ -290,7 +495,7 @@ def cmd_process_edited_md(input: Path, batch: bool, watermark: str, style: str,
                 watermark_kwargs['spacing_ratio'] = 2.5
             
             # 处理图片
-            image_result = processor.process_html(final_html, **watermark_kwargs)
+            image_result = processor.process_html(html_result, **watermark_kwargs)
             if image_result:
                 success_count += 1
                 click.echo(f"✅ 处理成功: {md_file} -> 生成 {image_result['segment_count']} 个片段")

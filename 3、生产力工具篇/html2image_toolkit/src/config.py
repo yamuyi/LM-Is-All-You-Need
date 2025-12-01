@@ -137,7 +137,7 @@ IMAGE_DOWNLOAD_CONFIG = {
 # DATA_DIR = ROOT_DIR / "data"
 # INPUT_DIR = DATA_DIR / "input"
 # OUTPUT_DIR = DATA_DIR / "output"
-# WORKING_DIR = DATA_DIR / "working"  # 新增：工作目录（手动编辑用）
+WORKING_DIR = DATA_DIR / "working"  # 新增：工作目录（手动编辑用）
 
 # # 细分输入目录（不变）
 # MHTML_INPUT_DIR = INPUT_DIR / "mhtml"
@@ -151,22 +151,22 @@ IMAGE_DOWNLOAD_CONFIG = {
 # SEGMENTED_OUTPUT_DIR = OUTPUT_DIR / "segmented"
 
 # # 新增：工作目录细分
-# WORKING_MD_DIR = WORKING_DIR / "md"  # 手动编辑后的Markdown存放目录
+WORKING_MD_DIR = WORKING_DIR / "md"  # 手动编辑后的Markdown存放目录
 
 # # 确保目录存在（新增WORKING相关目录）
-# def create_directories():
-#     dirs = [
-#         # 原有目录
-#         MHTML_INPUT_DIR, HTML_INPUT_DIR, MD_INPUT_DIR,
-#         HTML_OUTPUT_DIR, MD_OUTPUT_DIR, IMAGE_OUTPUT_DIR,
-#         SEGMENTED_OUTPUT_DIR,
-#         # 新增工作目录
-#         WORKING_DIR, WORKING_MD_DIR
-#     ]
-#     for dir_path in dirs:
-#         dir_path.mkdir(parents=True, exist_ok=True)
+def create_directories():
+    dirs = [
+        # 原有目录
+        MHTML_INPUT_DIR, HTML_INPUT_DIR, MD_INPUT_DIR,
+        HTML_OUTPUT_DIR, MD_OUTPUT_DIR, IMAGE_OUTPUT_DIR,
+        SEGMENTED_OUTPUT_DIR,
+        # 新增工作目录
+        WORKING_DIR, WORKING_MD_DIR
+    ]
+    for dir_path in dirs:
+        dir_path.mkdir(parents=True, exist_ok=True)
 
 # # 其余配置（水印、图片下载）不变...
 
 # # 初始化目录
-# create_directories()
+create_directories()
