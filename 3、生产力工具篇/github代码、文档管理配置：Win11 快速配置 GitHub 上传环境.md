@@ -18,11 +18,11 @@ Git 是连接本地和 GitHub 的桥梁，必须先装好。
 
 1. 打开命令行，输入以下两条命令（把引号里的内容换成你自己的 GitHub 用户名和绑定邮箱）：
         
-# 配置用户名（GitHub 账号的用户名）
-git config --global user.name "你的GitHub用户名"
+```# 配置用户名（GitHub 账号的用户名）
+git config --global user.name "你的GitHub用户名"```
 
-# 配置邮箱（GitHub 账号绑定的邮箱）
-git config --global user.email "你的GitHub邮箱"`
+```# 配置邮箱（GitHub 账号绑定的邮箱）
+git config --global user.email "你的GitHub邮箱"```
 
 2. **验证配置**：输入 `git config --list`，能看到刚才配置的用户名和邮箱，就说明绑定成功了。
 
