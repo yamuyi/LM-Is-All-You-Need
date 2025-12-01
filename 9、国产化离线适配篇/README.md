@@ -1,5 +1,26 @@
 # 国产化离线部署适配篇：国产化环境开源框架适配
 
+## TODO LIST
+
+模型服务
+
+* [ ] 推理引擎更新：MindIE、VLLM等
+* [ ] 推理模型更新：Deepseek-V3.1、多模态理解、OCR模型等
+
+项目管理工具
+
+* [ ] GitLab
+* [ ] Wiki
+
+基础科研平台
+
+* [ ] Dify（Dify-Plus）
+* [ ] RagFlow
+* [ ] MinerU
+* [ ] LlamaFactory
+* [ ] DeerFlow
+* [ ] [ Label Studio](https://labelstud.io/)
+
 ## 目录说明
 
 本篇专注于 **纯国产化软硬件环境**（华为910B ARM架构处理器 + OpenEuler 操作系统）下，主流大模型开源框架的离线适配与部署实战。核心覆盖dify、ragflow、llamafactory、MinerU等框架的环境适配、依赖构建、功能验证及性能优化，解决国产化场景下框架部署的兼容性难题。

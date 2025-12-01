@@ -41,4 +41,4 @@ fi
 echo "所有操作执行完成！"
 
 # 运行命令
-# ./git-push.sh "更新了readme.md"
+# ./git-push.sh "加入了html2image_toolkit"
