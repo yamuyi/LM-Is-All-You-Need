@@ -5349,3 +5349,73 @@ context 作为prompt的一个子集更合适，而不是反过来
 2025-12-01 11:25:41 | INFO | html2jpg:process_html:894 | 水印图片保存成功: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\segmented\example2_optimized_20251201_112532\watermarked_image.png
 2025-12-01 11:25:41 | INFO | html2jpg:split_image:861 | 图片切分完成: 9 个片段，保存至 D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\segmented\example2_optimized_20251201_112532\segments
 2025-12-01 11:25:44 | INFO | html2jpg:close:917 | ChromeDriver已关闭
+2025-12-01 21:54:00 | INFO | file_utils:list_files_in_dir:40 | 在 D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\html 找到 0 个文件
+2025-12-01 21:54:00 | INFO | file_utils:list_files_in_dir:40 | 在 D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\mhtml 找到 3 个文件
+2025-12-01 21:54:00 | INFO | run:cmd_export_md:182 | 
+开始导出: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\mhtml\example.mhtml
+2025-12-01 21:54:01 | INFO | mhtml2html:convert_mhtml_to_html:41 | 检测到MHTML文件编码: ascii (置信度: 1.00)
+2025-12-01 21:54:02 | SUCCESS | mhtml2html:convert_mhtml_to_html:78 | MHTML转HTML成功: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\mhtml\example.mhtml -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\html\example.html
+2025-12-01 21:54:02 | WARNING | html2md:download_image:166 | 图片下载失败: https://zhuanlan.zhihu.com/p/1943617549121065825 - 403 Client Error: Forbidden for url: https://zhuanlan.zhihu.com/p/1943617549121065825
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\41c6ad0b263f09741044a67703afc97d.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\c0b625ccc21adb67cf99281b9769e568.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\8de08ab076190df232db6ec0cc178ee8.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\85d70ec7af711fdcd2bf204c07a2aac6.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\19e3e0357e9b0051d24754734299c3f6.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\ada26b51e5a2c4423c25ec262d9de47d.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\24fe737783ff410560cd289d798c60f6.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\8970dd5e11a1f71b9eb89e23cebbc05a.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\48240593d4d7013e17b7c29d59fbd2c7.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\cda14710c2d19287d5f96248b7c645ab.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\1305882c6483115d2c13075ff2375870.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\29f104ce79f62ba0b75b280f171a2a8b.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\9520406dd34cd4bdb9767f44e7fe13b2.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\2e6aaeeb886b2eba0f5cc95b25aa3e64.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\02acbf987fb5dab056501fcc13e442e1.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\60e888e30323787ba2a9ea08b2773fea.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\41c6ad0b263f09741044a67703afc97d.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\d098744265670fdeb11d62cf05f3d422.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\b4cb0e04dfc3a4f73c434b91e3a694c6.webp
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\a448b74960d7a529ef0a0c6cb642c874.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\e39519dbaab6fc21f24f20d042c4adce.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\9f49878bb4c52a71d40852d1d3a42eba.jpg
+2025-12-01 21:54:02 | SUCCESS | html2md:convert_html_to_md:349 | HTML转Markdown成功: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\html\example.html -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\working\md\example.md
+2025-12-01 21:54:02 | INFO | run:cmd_export_md:182 | 
+开始导出: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\mhtml\example2.mhtml
+2025-12-01 21:54:02 | INFO | mhtml2html:convert_mhtml_to_html:41 | 检测到MHTML文件编码: ascii (置信度: 1.00)
+2025-12-01 21:54:02 | SUCCESS | mhtml2html:convert_mhtml_to_html:78 | MHTML转HTML成功: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\mhtml\example2.mhtml -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\html\example2.html
+2025-12-01 21:54:02 | WARNING | html2md:download_image:166 | 图片下载失败: https://zhuanlan.zhihu.com/p/1935829745716659211 - 403 Client Error: Forbidden for url: https://zhuanlan.zhihu.com/p/1935829745716659211
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\41c6ad0b263f09741044a67703afc97d.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\35fed8f8bf0b2c5677aeb5d5bde548f0.image
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\76af6904f17705059d4c192693510428.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\90b5c8c5d52a17fbeec43d5d57f52e2b.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\e313778daa5a29dca473260c1ea46661.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\274b5a7720be26042a648a12b0d3e7e6.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\39b46587e2a585bf3924956a06b8c4c1.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\3609890133037adaf79aa1a1091fa41a.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\41c6ad0b263f09741044a67703afc97d.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\e0f93ef16c27870d09756eaa60c60048.png
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\d5c2ee645a78076c20ffc87afa67ba1e.png
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\a639790c8e7c32a767a031aa02a32c70.png
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\6d837d52f9d46cedf5f6528148e8ae19.png
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\d93589578197908214c799dee03125af.png
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\42303a7f9adf48bd0dcf25712671ec63.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\bfe3ad5e23eda68901aeb49276e6b7e5.jpg
+2025-12-01 21:54:02 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\9547d7adce9af94c1abb88ad98ad13d5.jpg
+2025-12-01 21:54:02 | SUCCESS | html2md:convert_html_to_md:349 | HTML转Markdown成功: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\html\example2.html -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\working\md\example2.md
+2025-12-01 21:54:02 | INFO | run:cmd_export_md:182 | 
+开始导出: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\mhtml\example3.mhtml
+2025-12-01 21:54:04 | INFO | mhtml2html:convert_mhtml_to_html:41 | 检测到MHTML文件编码: ascii (置信度: 1.00)
+2025-12-01 21:54:05 | SUCCESS | mhtml2html:convert_mhtml_to_html:78 | MHTML转HTML成功: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\mhtml\example3.mhtml -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\html\example3.html
+2025-12-01 21:54:05 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mmbiz.qpic.cn/sz_mmbiz_jpg/GNpj5fw72EoEvD28Bcl6icUKOvq5Uz3NXicN5tmAOjx2Bx5mVUVcRf6EqX1v9urSCnvrp48kYib7Xp8bxjnjW7rJA/0?wx_fmt=jpeg -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\60f131590af18001574b2c3f769bf300.jpg
+2025-12-01 21:54:05 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mmbiz.qpic.cn/sz_mmbiz_png/GNpj5fw72EoEvD28Bcl6icUKOvq5Uz3NXkAr0q6j1tIKv30KLasHqPkrHJet6FGxGToMSo9b1NtMic5mxNUiaxoDA/640?wx_fmt=png&from=appmsg&watermark=1&tp=webp&wxfrom=5&wx_lazy=1#imgIndex=0 -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\69eb42123dd1ac20331f6600d1d52d15.jpg
+2025-12-01 21:54:05 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mmbiz.qpic.cn/sz_mmbiz_png/GNpj5fw72EoEvD28Bcl6icUKOvq5Uz3NXgHATZ6UkYG2fN2icfBDSQxJJHbTrELsMz7v1RBV0rSn3pHQCXOKWz1w/640?wx_fmt=png&from=appmsg&watermark=1&tp=webp&wxfrom=5&wx_lazy=1#imgIndex=1 -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\d13e1144a16491ed2c6e3e5d8641c1c1.jpg
+2025-12-01 21:54:05 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mmbiz.qpic.cn/sz_mmbiz_png/GNpj5fw72EoEvD28Bcl6icUKOvq5Uz3NXtHLbEDa4iaYXt4HZ4WJajkCxPAaMzb9AuvhNCrq5FUvbE6HGRmr9lpA/640?wx_fmt=png&from=appmsg&watermark=1&tp=webp&wxfrom=5&wx_lazy=1#imgIndex=2 -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\789736901e89a1443c0a8c62b9ac5c3b.jpg
+2025-12-01 21:54:05 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mmbiz.qpic.cn/sz_mmbiz_png/GNpj5fw72EoEvD28Bcl6icUKOvq5Uz3NX8oEb5zYPNSuH4tJ28uq628feyyCH6icSzGoqug6fIqib6htic7PXIVEibQ/640?wx_fmt=png&from=appmsg&watermark=1&tp=webp&wxfrom=5&wx_lazy=1#imgIndex=3 -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\98c0cf945394c8e32bcc3c472d529924.jpg
+2025-12-01 21:54:05 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mmbiz.qpic.cn/sz_mmbiz_jpg/GNpj5fw72EoEvD28Bcl6icUKOvq5Uz3NXn6jlc2sm4W3OyOWQK5UVKD1wzu7oxy5jyUtOYC7KshTzfkwGAQpbEA/640?wx_fmt=jpeg&from=appmsg&watermark=1&tp=webp&wxfrom=5&wx_lazy=1#imgIndex=4 -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\c3b52bc109af1a94a73046387746847a.jpg
+2025-12-01 21:54:05 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mmbiz.qpic.cn/sz_mmbiz_png/GNpj5fw72EoEvD28Bcl6icUKOvq5Uz3NXHjFIu76J5E8zh10TvtzGExtaYibbYjxtBBkQ8wV8Zxzrh6b5rnib23WA/640?wx_fmt=png&from=appmsg&watermark=1&tp=webp&wxfrom=5&wx_lazy=1#imgIndex=5 -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\f291f37d3bc9a960465dfb0a63365cda.jpg
+2025-12-01 21:54:05 | DEBUG | html2md:download_image:162 | 图片下载成功: http://mmbiz.qpic.cn/mmbiz_png/GNpj5fw72Er9C33gNMN8EJB0lXvDj3yrQJqR1O53zfha0WrxFAUVONCqoWk7qFG4n2eM3qzkyaUWcsLEKkSiaHQ/0?wx_fmt=png -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\803547967fd9cf9df371302b0a896d0e.jpg
+2025-12-01 21:54:06 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mp.weixin.qq.com/s/1Yc5aLrkXOH5jRdV77us-Q -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\99232feb6d9154cc540572b1dcede8d7.jpg
+2025-12-01 21:54:06 | DEBUG | html2md:download_image:145 | 图片已存在，跳过下载: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\803547967fd9cf9df371302b0a896d0e.jpg
+2025-12-01 21:54:06 | DEBUG | html2md:download_image:162 | 图片下载成功: https://mmbiz.qpic.cn/mmbiz_png/GNpj5fw72Er9C33gNMN8EJB0lXvDj3yrQJqR1O53zfha0WrxFAUVONCqoWk7qFG4n2eM3qzkyaUWcsLEKkSiaHQ/300?wx_fmt=png&wxfrom=18 -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\ba018c7153ef8193dbe4ab584a014b27.jpg
+2025-12-01 21:54:06 | DEBUG | html2md:download_image:162 | 图片下载成功: https://res.wx.qq.com/op_res/opqv3ix6k9E4e64ZzO7uIqE3ZblwIojfmt7u70m59yS1ylFK-hTu6Ra8V_LaWQJ1P4OlUJPdXLfVBtrm3TwRrw -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\images\132cc1505560857109badcb8c906aa5a.jpg
+2025-12-01 21:54:06 | SUCCESS | html2md:convert_html_to_md:349 | HTML转Markdown成功: D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\html\example3.html -> D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\working\md\example3.md
