@@ -1,0 +1,10 @@
+beautifulsoup4==4.12.3
+chardet==5.2.0
+html2text==2024.2.26
+requests==2.32.3
+selenium==4.23.1
+Pillow==10.4.0
+python-dotenv==1.0.1
+click==8.1.7  # 命令行工具
+loguru==0.7.2  # 日志工具
+webdriver-manager==4.0.2  # 自动管理ChromeDriver
