@@ -1,0 +1,359 @@
+<html lang="zh-CN">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   面试官：模型如何在指令微调过程中构造或筛选高质量数据？
+  </title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <style>
+   * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif; 
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+            line-height: 1.8;
+            background: white;
+            font-size: 18px;  /* 增加基础字体大小 */
+            color: #333;
+        }
+        
+        h1 {
+            font-size: 32px;  /* 增加h1字体大小 */
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #eaeaea;
+            font-weight: 700;
+            color: #222;
+        }
+        
+        h2 {
+            font-size: 28px;  /* 增加h2字体大小 */
+            margin: 28px 0 18px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        h3 {
+            font-size: 24px;  /* 增加h3字体大小 */
+            margin: 24px 0 16px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        h4 {
+            font-size: 20px;  /* 增加h4字体大小 */
+            margin: 20px 0 14px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        h5, h6 {
+            font-size: 18px;  /* 增加h5,h6字体大小 */
+            margin: 18px 0 12px;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        p {
+            margin: 16px 0;
+            text-align: justify;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        a {
+            color: #0070f3;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        
+        a:hover {
+            border-bottom-color: #0070f3;
+        }
+        
+        /* 代码块样式 */
+        pre {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid #eaeaea;
+            font-size: 16px;  /* 代码字体大小 */
+        }
+        
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background: #f5f5f5;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 16px;  /* 行内代码字体大小 */
+            color: #d63384;
+        }
+        
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: #333;
+            font-size: 16px;  /* 代码块内代码字体大小 */
+        }
+        
+        /* 表格样式 */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            font-size: 17px;  /* 表格字体大小 */
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* 列表样式 */
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+            line-height: 1.8;
+        }
+        
+        /* 引用块样式 */
+        blockquote {
+            border-left: 4px solid #0070f3;
+            margin: 20px 0;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-radius: 0 4px 4px 0;
+            font-size: 17px;  /* 引用块字体大小 */
+        }
+        
+        blockquote p {
+            margin: 0;
+        }
+        
+        /* 图片样式 */
+        img {
+            display: block;
+            margin: 25px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* 目录样式 */
+        .toc-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid #eaeaea;
+        }
+        
+        .toc-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .toc ul ul {
+            padding-left: 20px;
+        }
+        
+        .toc li {
+            margin: 6px 0;
+        }
+        
+        .toc a {
+            color: #555;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            color: #0070f3;
+        }
+        
+        /* 分割线 */
+        hr {
+            border: none;
+            border-top: 2px solid #eaeaea;
+            margin: 30px 0;
+        }
+        
+        /* 脚注 */
+        .footnote {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 内容包装器 */
+        .content-wrapper {
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+        
+        /* 打印优化 */
+        @media print {
+            body {
+                padding: 0;
+                font-size: 16pt;
+            }
+            
+            h1 { font-size: 28pt; }
+            h2 { font-size: 24pt; }
+            h3 { font-size: 20pt; }
+            h4 { font-size: 18pt; }
+            
+            pre, code {
+                font-size: 14pt;
+            }
+            
+            table {
+                font-size: 15pt;
+            }
+        }
+  </style>
+ </head>
+ <body>
+  <div class="content-wrapper">
+   <h1 id="_1">
+    面试官：模型如何在指令微调过程中构造或筛选高质量数据？
+   </h1>
+   <p>
+    大模型如何在指令微调过程中构造或筛选高质量数据？
+   </p>
+   <ol>
+    <li>
+     一、数据的来源与构造
+    </li>
+    <li>
+     1.1 合成数据的高端玩法：不仅仅是Prompt Engineering
+    </li>
+    <li>
+     1.2 真实场景下的案例
+    </li>
+    <li>
+     二、 数据的筛选–这才是见真功夫的地方
+    </li>
+    <li>
+     2.1 语义去重：MinHash和Embedding大法
+    </li>
+    <li>
+     2.2 基于模型打分的质量过滤（LLM-as-a-Judge）
+    </li>
+    <li>
+     2.3 难度与复杂度的量化：IFD指标
+    </li>
+    <li>
+     2.4 毒性与偏见过滤
+    </li>
+    <li>
+     三、 推理数据的崛起
+    </li>
+    <li>
+     四、 人的作用 Human-in-the-Loop的最后一公里
+    </li>
+    <li>
+     五、 那些必须要避的坑（血泪经验）
+    </li>
+    <li>
+     5.1 别忽视Prompt Template的影响
+    </li>
+    <li>
+     5.2 数据分布的配比是一门玄学
+    </li>
+    <li>
+     5.3 拒绝测试集污染
+    </li>
+   </ol>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_012a9ceff034e5a778c18cb2c62a2fe7.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_e525b74652502465a90b2502589d36b5.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_8292026db51ae6139e28b81b12e94a3c.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_c12db32b9fba87f0b3af6a216c443047.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_bfe25dacc0444420036fa8d5f75838eb.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_2f577fff73c441cfc5f7265be7f7efd0.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_9cf8822ec680831fdd397d2ba30324c1.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_46177383070c24d4c9214f668f360966.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_dfca02359e866240f70da0f2cbe2a641.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_4c691af9305bca6074ee070f33153610.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_58588cd9855045a875fe761eea6313c0.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_74419c944980d900ff1495fcb94bb9af.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_8108ccc0b06fbcdd8d90171d7d16263c.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_f6ca5ca8884fda3171c17607636a14ad.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_a9f09b5bf0a58684c57b4acd068e72c8.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_8a2355373c34eb6322b0ceed891e58b8.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_863349abbd5491170ceb7cc30beab48d.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_a951ae312e2a1b7c673ce4c5595bf6de.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_5c59115ed7d8690fdabef980c41e71f4.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_cf6083e1b98315208caa7480208c407d.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+   <p>
+    <img alt="img" src="images/面试官：模型如何在指令微调过程中构造或筛选高质量数据？_5ddd2daf3e6056b3053cddd89282bfa1.jpg" style="display: block; margin: 25px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+   </p>
+  </div>
+ </body>
+</html>

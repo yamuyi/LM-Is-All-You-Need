@@ -42,4 +42,4 @@ echo "所有操作执行完成！"
 
 # 运行命令
 # git pull origin main
-# ./git-push.sh "加入了html2image_toolkit"
+# ./git-push.sh 更新了html2image_toolkit，分步完成转化"

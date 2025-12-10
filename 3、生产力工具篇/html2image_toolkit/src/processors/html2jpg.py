@@ -427,14 +427,15 @@ class HTMLToSegmentedImage:
         except Exception as e:
             logger.error(f"图片切分失败: {str(e)}", exc_info=True)
             return []
-    
-    def process_html(self, html_file: str | Path, task_dir: Path, **kwargs) -> dict | None:
+
+
+    def process_html(self, html_file: str | Path, output_dir: Path, **kwargs) -> dict | None:
         """
         完整处理流程：HTML -> 长图片 -> 加水印 -> 切分
         
         Args:
             html_file: HTML文件路径
-            task_dir: 任务目录
+            output_dir: 输出目录（任务目录）
             **kwargs: 水印参数
         
         Returns:
@@ -446,8 +447,13 @@ class HTMLToSegmentedImage:
             return None
         
         # 创建任务子目录
-        from src.config import create_task_directories
-        task_dirs = create_task_directories(task_dir)
+        task_dirs = {
+            'segmented': output_dir / "segmented",
+            'temp': output_dir / ".temp"
+        }
+        
+        for dir_path in task_dirs.values():
+            dir_path.mkdir(parents=True, exist_ok=True)
         
         try:
             # 1. HTML转长图片
@@ -469,6 +475,8 @@ class HTMLToSegmentedImage:
             # 3. 切分图片
             segment_height = kwargs.get('segment_height', DEFAULT_WATERMARK['segment_height'])
             segments_dir = task_dirs['segmented'] / "segments"
+            segments_dir.mkdir(exist_ok=True)
+            
             segment_paths = self.split_image(watermarked_image, segment_height, segments_dir)
             
             return {
@@ -478,12 +486,11 @@ class HTMLToSegmentedImage:
                 'segments_dir': str(segments_dir),
                 'segment_count': len(segment_paths),
                 'segments': [str(p) for p in segment_paths],
-                'task_dir': str(task_dir)
+                'task_dir': str(output_dir)
             }
         except Exception as e:
             logger.error(f"HTML处理流程失败: {str(e)}", exc_info=True)
             return None
-    
     def close(self):
         """关闭ChromeDriver"""
         if hasattr(self, 'driver'):

@@ -88,3 +88,21 @@ plaintext
 
 
 python run.py full-process -i data/input/mhtml/example.mhtml -w "你的水印文字" --clean-md --remove-image-watermark
+
+
+
+
+
+# 第一阶段：批量转换文件夹中的MHTML/HTML文件为Markdown
+python run.py to-markdown "D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input\mhtml"
+
+# 递归处理子目录
+python run.py to-markdown "D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\input" --recursive
+
+# 第二阶段：批量转换文件夹中的Markdown文件为图片
+python run.py to-images "D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output\tasks" --watermark "机密" --style grid
+
+# 递归处理
+python run.py to-images "D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data" --recursive --watermark "测试" --style medium
+
+python run.py to-images "D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output" --watermark "知识星球：羊头人的AI日志" --style grid

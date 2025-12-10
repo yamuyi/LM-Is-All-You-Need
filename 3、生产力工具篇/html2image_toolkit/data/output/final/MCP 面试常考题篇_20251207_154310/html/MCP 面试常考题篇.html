@@ -1,0 +1,846 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <link href="cid:css-6770cf0d-9365-470d-bb9f-d123b5893d55@mhtml.blink" rel="stylesheet" type="text/css"/>
+  <link href="cid:css-2ded6878-01bc-49e3-9be0-d4250fb4b004@mhtml.blink" rel="stylesheet" type="text/css"/>
+  <link href="https://articles.zsxq.com/favicon.ico" rel="icon"/>
+  <title>
+   MCP 面试常考题篇
+  </title>
+  <link href="https://articles.zsxq.com/css/quill.snow.css?t=202208171505" rel="stylesheet"/>
+  <link href="https://articles.zsxq.com/css/github.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+ </head>
+ <body class="js-disable-copy">
+  <div class="post js_watermark quill-editor" style='background-repeat: repeat; background-image: url("data:image/png;base64,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"); background-size: 940px 228.899px;'>
+   <h1 class="title title-mark">
+    MCP 面试常考题篇
+   </h1>
+   <div class="group-info">
+    <a href="https://wx.zsxq.com/group/51112141255244">
+     <span>
+      来自：
+     </span>
+     <span class="group-name">
+      大模型面试宝典
+     </span>
+    </a>
+   </div>
+   <div class="author-info">
+    <div class="author">
+     <img alt="用户头像" src="https://images.zsxq.com/FgRqMQ84FqULZXhiAK4Q0jeyTn4z?e=2095660800&amp;token=kIxbL07-8jAj8w1n4s9zv64FuZZNEATmlU_Vm6zD:cwcPHNTAK_R4aRFTg66BNbHr3kk="/>
+     <span class="nick-name">
+      Just do it！
+     </span>
+    </div>
+    <span class="date" id="article-date">
+     2025年11月22日 22:29
+    </span>
+   </div>
+   <div class="ql-snow">
+    <div class="content ql-editor">
+     <h2 class="ql-line-height-1_6">
+      <a href="https://articles.zsxq.com/id_f6mvc2r6wzlj.html" style="background-color: rgb(255, 255, 255); color: rgb(0, 136, 204);" target="_blank">
+       MCP 模型上下文协议（Model Context Protocol） 常考题篇
+      </a>
+     </h2>
+     <ol>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       二、MCP 基础
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.1 什么是 MCP？
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.2 为什么要有 MCP？
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.3 从一个例子介绍 MCP 和 API 的区别
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       三、MCP的工作原理
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.1 MCP架构
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.2 MCP 客户端和服务器是如何通信?
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.3 MCP 核心特点 是什么?
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.4 MCP 解决了什么问题?
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.5 MCP 有什么好处?
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       MCP vs Function Call
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       MCP 对比 Function Call
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       MCP 和 Function Call 关系
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       MCP vs A2A
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       MCP 和 A2A 区别
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       MCP 和 A2A 联系
+      </li>
+     </ol>
+     <p>
+      <br/>
+     </p>
+     <h2 class="ql-line-height-1_6">
+      <a href="https://articles.zsxq.com/id_c890gt5ir9i6.html" style="background-color: rgb(255, 255, 255); color: rgb(0, 136, 204);" target="_blank">
+       8种主流Agent框架如何使用MCP
+      </a>
+     </h2>
+     <ol>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       前言
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       一、Open AI Agents SDK
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       1.1 Open AI Agents SDK 框架简介
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       1.2 Open AI Agents SDK 如何继承 MCP
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       1.3 Open AI Agents SDK 特点
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       二、LangGraph
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.1 LangGraph 框架简介
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.2 LangGraph 如何继承 MCP
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.3 LangGraph 特点
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       三、LlamaIndex
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.1 LlamaIndex 框架简介
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.2 LlamaIndex 如何继承 MCP
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.3 LlamaIndex 特点
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       四、AutoGen 0.4+
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       4.1 AutoGen 0.4+ 框架简介
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       4.2 AutoGen 0.4+ 如何继承 MCP
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       4.3 AutoGen 0.4+ 特点
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       五、Pydantic AI
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       5.1 Pydantic AI 框架简介
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       5.2 Pydantic AI 如何继承 MCP
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       5.3 Pydantic AI 特点
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       六、SmolAgents
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       6.1 SmolAgents 框架简介
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       6.2 SmolAgents 如何继承 MCP
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       6.3 SmolAgents 特点
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       七、Camel
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       7.1 Camel 框架简介
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       7.2 Camel 如何继承 MCP
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       7.3 Camel 特点
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       八、CrewAI
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       8.1 CrewAI 框架简介
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       8.2 CrewAI 如何继承 MCP
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       8.3 CrewAI 特点
+      </li>
+     </ol>
+     <p>
+      <br/>
+     </p>
+     <h2 class="ql-line-height-1_6">
+      <a href="https://articles.zsxq.com/id_du3t7ujsgu8t.html" style="background-color: rgb(255, 255, 255); color: rgb(0, 136, 204);" target="_blank">
+       MCP、API 与 Function Call 傻傻分不清篇
+      </a>
+     </h2>
+     <ol>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       一、前言
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       二、基本概念与定义
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.1 API (Application Programming Interface)
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.2 Function Call
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       2.3 Model Context Protocol (MCP)
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       三、在AI Agent中的作用
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.1 API在AI Agent中的作用
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.2 Function Call在AI Agent中的作用
+      </li>
+      <li class="ql-indent-2" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.2.1 Function call的工作流程
+      </li>
+      <li class="ql-indent-2" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.2.2 Fuction Call 关键组件
+      </li>
+      <li class="ql-indent-2" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.2.3 Fuction Call 优势
+      </li>
+      <li class="ql-indent-2" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.2.4 Fuction Call 实现
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.3 MCP在AI Agent中的作用
+      </li>
+      <li class="ql-indent-2" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.3.1 MCP 的工作流程
+      </li>
+      <li class="ql-indent-2" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       3.3.2 MCP 的优势
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       四、三者的区别与联系
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       4.1 层级区别
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       4.2 关系与协作
+      </li>
+      <li data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       五、具体应用场景
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       5.1 使用Function Call的场景
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       5.2 使用MCP的场景
+      </li>
+      <li class="ql-indent-1" data-list="bullet">
+       <span class="ql-ui">
+       </span>
+       5.3 同时使用的情况
+      </li>
+     </ol>
+     <p>
+      <br/>
+     </p>
+    </div>
+   </div>
+   <div class="milkdown-preview" style="display: none;">
+    <h2 class="ql-line-height-1_6">
+     <a href="https://articles.zsxq.com/id_f6mvc2r6wzlj.html" style="background-color: rgb(255, 255, 255); color: rgb(0, 136, 204);" target="_blank">
+      MCP 模型上下文协议（Model Context Protocol） 常考题篇
+     </a>
+    </h2>
+    <ol>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      二、MCP 基础
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.1 什么是 MCP？
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.2 为什么要有 MCP？
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.3 从一个例子介绍 MCP 和 API 的区别
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      三、MCP的工作原理
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.1 MCP架构
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.2 MCP 客户端和服务器是如何通信?
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.3 MCP 核心特点 是什么?
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.4 MCP 解决了什么问题?
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.5 MCP 有什么好处?
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      MCP vs Function Call
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      MCP 对比 Function Call
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      MCP 和 Function Call 关系
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      MCP vs A2A
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      MCP 和 A2A 区别
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      MCP 和 A2A 联系
+     </li>
+    </ol>
+    <p>
+     <br/>
+    </p>
+    <h2 class="ql-line-height-1_6">
+     <a href="https://articles.zsxq.com/id_c890gt5ir9i6.html" style="background-color: rgb(255, 255, 255); color: rgb(0, 136, 204);" target="_blank">
+      8种主流Agent框架如何使用MCP
+     </a>
+    </h2>
+    <ol>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      前言
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      一、Open AI Agents SDK
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      1.1 Open AI Agents SDK 框架简介
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      1.2 Open AI Agents SDK 如何继承 MCP
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      1.3 Open AI Agents SDK 特点
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      二、LangGraph
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.1 LangGraph 框架简介
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.2 LangGraph 如何继承 MCP
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.3 LangGraph 特点
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      三、LlamaIndex
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.1 LlamaIndex 框架简介
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.2 LlamaIndex 如何继承 MCP
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.3 LlamaIndex 特点
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      四、AutoGen 0.4+
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      4.1 AutoGen 0.4+ 框架简介
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      4.2 AutoGen 0.4+ 如何继承 MCP
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      4.3 AutoGen 0.4+ 特点
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      五、Pydantic AI
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      5.1 Pydantic AI 框架简介
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      5.2 Pydantic AI 如何继承 MCP
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      5.3 Pydantic AI 特点
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      六、SmolAgents
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      6.1 SmolAgents 框架简介
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      6.2 SmolAgents 如何继承 MCP
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      6.3 SmolAgents 特点
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      七、Camel
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      7.1 Camel 框架简介
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      7.2 Camel 如何继承 MCP
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      7.3 Camel 特点
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      八、CrewAI
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      8.1 CrewAI 框架简介
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      8.2 CrewAI 如何继承 MCP
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      8.3 CrewAI 特点
+     </li>
+    </ol>
+    <p>
+     <br/>
+    </p>
+    <h2 class="ql-line-height-1_6">
+     <a href="https://articles.zsxq.com/id_du3t7ujsgu8t.html" style="background-color: rgb(255, 255, 255); color: rgb(0, 136, 204);" target="_blank">
+      MCP、API 与 Function Call 傻傻分不清篇
+     </a>
+    </h2>
+    <ol>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      一、前言
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      二、基本概念与定义
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.1 API (Application Programming Interface)
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.2 Function Call
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      2.3 Model Context Protocol (MCP)
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      三、在AI Agent中的作用
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.1 API在AI Agent中的作用
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.2 Function Call在AI Agent中的作用
+     </li>
+     <li class="ql-indent-2" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.2.1 Function call的工作流程
+     </li>
+     <li class="ql-indent-2" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.2.2 Fuction Call 关键组件
+     </li>
+     <li class="ql-indent-2" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.2.3 Fuction Call 优势
+     </li>
+     <li class="ql-indent-2" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.2.4 Fuction Call 实现
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.3 MCP在AI Agent中的作用
+     </li>
+     <li class="ql-indent-2" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.3.1 MCP 的工作流程
+     </li>
+     <li class="ql-indent-2" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      3.3.2 MCP 的优势
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      四、三者的区别与联系
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      4.1 层级区别
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      4.2 关系与协作
+     </li>
+     <li data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      五、具体应用场景
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      5.1 使用Function Call的场景
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      5.2 使用MCP的场景
+     </li>
+     <li class="ql-indent-1" data-list="bullet">
+      <span class="ql-ui">
+      </span>
+      5.3 同时使用的情况
+     </li>
+    </ol>
+    <p>
+     <br/>
+    </p>
+   </div>
+   <footer>
+    <div class="horizon-line">
+    </div>
+    <img id="logo" src="https://articles.zsxq.com/assets_dweb/logo@1x.png"/>
+    <div class="text">
+     知识星球
+    </div>
+    <div class="horizon-line">
+    </div>
+   </footer>
+   <div class="qrcode-container">
+    <img class="qrcode" id="qrcode" src="data:image/png;base64,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"/>
+    <div class="text-desc">
+     扫码加入星球
+    </div>
+    <div class="text-desc">
+     查看更多优质内容
+    </div>
+   </div>
+   <div id="qrcode-url">
+    https://wx.zsxq.com/mweb/views/joingroup/join_group.html?group_id=51112141255244
+   </div>
+  </div>
+  <div class="message-container-overlay">
+  </div>
+  <link href="https://articles.zsxq.com/css/styles.css" rel="stylesheet"/>
+  <link href="https://articles.zsxq.com/css/article.css" rel="stylesheet"/>
+ </body>
+</html>
