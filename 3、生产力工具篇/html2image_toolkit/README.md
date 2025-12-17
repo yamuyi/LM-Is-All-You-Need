@@ -1,6 +1,7 @@
 # HTML2Image Toolkit
 
 一站式格式转换与图片处理工具，支持：
+
 - MHTML → HTML
 - HTML → Markdown（自动下载图片、去水印）
 - Markdown → HTML（美化、扩展语法）
@@ -9,6 +10,7 @@
 ## 快速开始
 
 ### 1. 环境准备
+
 ```bash
 # 克隆项目
 git clone <项目地址>
@@ -106,3 +108,4 @@ python run.py to-images "D:\LM-Is-All-You-Need\3、生产力工具篇\html2image
 python run.py to-images "D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data" --recursive --watermark "测试" --style medium
 
 python run.py to-images "D:\LM-Is-All-You-Need\3、生产力工具篇\html2image_toolkit\data\output" --watermark "知识星球：羊头人的AI日志" --style grid
+```

@@ -1,0 +1,38 @@
+{
+  "tools": [
+    {
+      "name": "Markdown图片本地化工具",
+      "module": "markdown_image_localizer",
+      "description": "将Markdown文件中的远程图片下载到本地",
+      "icon": "📸",
+      "author": "工具平台",
+      "version": "1.0.0",
+      "category": "文档处理"
+    },
+    {
+      "name": "Markdown转HTML工具",
+      "module": "md_to_html_converter",
+      "description": "将Markdown文件转换为美观的HTML文档",
+      "icon": "📄",
+      "author": "工具平台",
+      "version": "1.0.0",
+      "category": "文档处理"
+    },
+    {
+      "name": "md转html",
+      "module": "md_to_html_converter.py",
+      "description": "md转html",
+      "icon": "🔧",
+      "author": "匿名",
+      "version": "1.0.0",
+      "category": "文档处理"
+    }
+  ],
+  "categories": [
+    "文档处理",
+    "图片处理",
+    "数据转换",
+    "开发工具",
+    "示例"
+  ]
+}

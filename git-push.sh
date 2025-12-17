@@ -42,4 +42,6 @@ echo "所有操作执行完成！"
 
 # 运行命令
 # git pull origin main
-# ./git-push.sh 更新了html2image_toolkit，分步完成转化"
+# ./git-push.sh "更新了html2image_toolkit，加入了streamlit 前端"
+
+# streamlit run portal.py
