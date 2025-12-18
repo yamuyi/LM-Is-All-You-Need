@@ -36,10 +36,10 @@ TOOLS_CONFIG = [
         "color": "#4CAF50"
     },
     {
-        "name": "示例工具2",
-        "description": "另一个示例工具",
+        "name": "PNG加水印",
+        "description": "PNG加水印",
         "icon": "📚",
-        "page": "PDF处理工具",
+        "page": "04_PNG加水印",
         "category": "文档处理",
         "color": "#646464"
     },

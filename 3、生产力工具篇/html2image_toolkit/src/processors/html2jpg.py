@@ -65,15 +65,21 @@ class HTMLToSegmentedImage:
             import time
             time.sleep(3)  # 额外等待时间确保所有资源加载
             
-            # 获取准确的高度
-            total_height = self._get_accurate_page_height()
-            total_width = self._get_accurate_page_width()
+            # 获取准确的高度（返回整数）
+            total_height = int(self._get_accurate_page_height())
+            total_width = int(self._get_accurate_page_width())
             
             logger.info(f"计算后页面尺寸: {total_width} x {total_height}")
             
             if total_height <= 0 or total_width <= 0:
                 logger.error("无法获取有效的页面尺寸")
                 return None
+            
+            # 检查是否超过Chrome截图限制
+            MAX_CHROME_HEIGHT = 32767
+            if total_height > MAX_CHROME_HEIGHT:
+                logger.warning(f"页面高度 {total_height} 超过Chrome限制 {MAX_CHROME_HEIGHT}, 自动截断")
+                total_height = MAX_CHROME_HEIGHT
                 
             # 限制最大宽度，避免过宽
             max_content_width = 1000
@@ -100,10 +106,14 @@ class HTMLToSegmentedImage:
                 """)
                 # 重新计算高度
                 time.sleep(2)
-                total_height = self._get_accurate_page_height()
+                total_height = int(self._get_accurate_page_height())
+                if total_height > MAX_CHROME_HEIGHT:
+                    total_height = MAX_CHROME_HEIGHT
             
             # 设置浏览器窗口大小
-            self.driver.set_window_size(total_width + 100, min(total_height + 100, 32767))
+            driver_width = min(total_width + 100, MAX_CHROME_HEIGHT)
+            driver_height = min(total_height + 100, MAX_CHROME_HEIGHT)
+            self.driver.set_window_size(driver_width, driver_height)
             
             # 再次等待渲染
             time.sleep(2)
@@ -161,15 +171,18 @@ class HTMLToSegmentedImage:
             """)
             heights.append(max_bottom)
             
-            # 返回最大值
+            # 返回最大值（确保是整数）
             accurate_height = max(heights) + 20
             logger.debug(f"高度计算: 最终={accurate_height}")
             
-            return accurate_height
+            return int(accurate_height)
             
         except Exception as e:
             logger.warning(f"获取页面高度时出错: {e}, 使用备用方法")
-            return self.driver.execute_script("return document.body.scrollHeight")
+            try:
+                return int(self.driver.execute_script("return document.body.scrollHeight"))
+            except:
+                return 0
 
     def _get_accurate_page_width(self) -> int:
         """获取准确的页面宽度"""
@@ -184,7 +197,7 @@ class HTMLToSegmentedImage:
             )
             
             widths.extend([body_width, doc_width, max_width])
-            return max(widths)
+            return int(max(widths))
             
         except Exception as e:
             logger.warning(f"获取页面宽度时出错: {e}")
@@ -193,13 +206,21 @@ class HTMLToSegmentedImage:
     def _take_scrolling_screenshot(self, total_height: int) -> Image.Image:
         """使用滚动方式截图（备用方法）"""
         try:
-            logger.info("使用滚动截图方式")
+            logger.info(f"使用滚动截图方式，总高度: {total_height}")
             
-            viewport_height = self.driver.execute_script("return window.innerHeight")
+            # 获取视口高度（整数）
+            viewport_height = int(self.driver.execute_script("return window.innerHeight"))
+            if viewport_height <= 0:
+                viewport_height = 1000  # 默认值
+            
             slices = []
             offset = 0
             
-            while offset < total_height:
+            # 计算需要截图的次数
+            num_slices = math.ceil(total_height / viewport_height)
+            logger.info(f"需要截取 {num_slices} 个切片，每个切片高度: {viewport_height}")
+            
+            for i in range(num_slices):
                 # 滚动到当前位置
                 self.driver.execute_script(f"window.scrollTo(0, {offset});")
                 import time
@@ -211,27 +232,44 @@ class HTMLToSegmentedImage:
                 slices.append(slice_img)
                 
                 offset += viewport_height
+                
+                # 如果到达末尾，停止
+                if offset >= total_height:
+                    break
+            
+            if not slices:
+                raise Exception("无法获取任何截图切片")
             
             # 合并所有切片
-            if slices:
-                total_width = slices[0].width
-                combined_image = Image.new('RGB', (total_width, total_height))
-                y_offset = 0
+            total_width = slices[0].width
+            logger.info(f"切片宽度: {total_width}, 切片数量: {len(slices)}")
+            
+            # 计算实际总高度（可能小于预期）
+            actual_total_height = sum(slice_img.height for slice_img in slices)
+            actual_total_height = min(actual_total_height, total_height)
+            
+            combined_image = Image.new('RGB', (total_width, actual_total_height))
+            y_offset = 0
+            
+            for slice_img in slices:
+                if y_offset >= actual_total_height:
+                    break
+                    
+                # 如果切片高度超过剩余空间，裁剪它
+                if y_offset + slice_img.height > actual_total_height:
+                    slice_img = slice_img.crop((0, 0, total_width, actual_total_height - y_offset))
                 
-                for slice_img in slices:
-                    combined_image.paste(slice_img, (0, y_offset))
-                    y_offset += slice_img.height
-                    # 如果已经达到总高度，停止粘贴
-                    if y_offset >= total_height:
-                        break
-                
-                return combined_image
-            else:
-                raise Exception("无法获取任何截图切片")
+                combined_image.paste(slice_img, (0, y_offset))
+                y_offset += slice_img.height
+            
+            logger.info(f"滚动截图完成，最终尺寸: {combined_image.size}")
+            return combined_image
                 
         except Exception as e:
-            logger.error(f"滚动截图失败: {e}")
+            logger.error(f"滚动截图失败: {e}", exc_info=True)
             raise
+
+
 
     def add_watermark(self, image: Image.Image, watermark_text: str, **kwargs) -> Image.Image:
         """统一水印接口（支持多种样式）"""

@@ -5,43 +5,222 @@ from bs4 import BeautifulSoup
 import uuid
 import zipfile
 from datetime import datetime
+import tempfile
+import os
+import base64
+from io import BytesIO
+
+# 新增导入 - 用于PDF和图片处理
+import xhtml2pdf.pisa as pisa  # HTML转PDF[citation:5]
+from spire.pdf import *  # PDF水印处理[citation:2]
+from spire.pdf.common import *
+from pdf2image import convert_from_path  # PDF转PNG[citation:3][citation:8]
+from PIL import Image, ImageDraw, ImageFont
+import math
 
 # 页面配置
 st.set_page_config(
-    page_title="Markdown转HTML",
+    page_title="Markdown转HTML/PDF/图片工具",
     page_icon="📄",
     layout="wide"
 )
+
+def html_to_pdf(html_content, output_path, pdf_settings=None):
+    """将HTML转换为PDF文件[citation:5]"""
+    try:
+        with open(output_path, "wb") as pdf_file:
+            # 使用xhtml2pdf将HTML转换为PDF
+            pisa_status = pisa.CreatePDF(
+                html_content,
+                dest=pdf_file,
+                encoding='utf-8'
+            )
+        
+        if pisa_status.err:
+            st.error(f"PDF转换错误: {pisa_status.err}")
+            return False
+        return True
+    except Exception as e:
+        st.error(f"PDF转换失败: {str(e)}")
+        return False
+
+def add_watermark_to_pdf(input_pdf, output_pdf, watermark_config):
+    """为PDF添加水印[citation:2]"""
+    try:
+        # 创建PdfDocument对象
+        doc = PdfDocument()
+        
+        # 加载PDF文档
+        doc.LoadFromFile(input_pdf)
+        
+        # 创建水印字体
+        font_size = watermark_config.get('size', 48)
+        font = PdfTrueTypeFont("Arial", font_size, 0, True)
+        
+        # 获取水印文本
+        text = watermark_config.get('text', '')
+        if not text:
+            return False
+        
+        # 测量文本尺寸
+        text_width = font.MeasureString(text).Width
+        text_height = font.MeasureString(text).Height
+        
+        # 水印颜色
+        color_hex = watermark_config.get('color', '#808080')
+        color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (1, 3, 5))
+        color = PdfRGBColor(color_rgb[0]/255, color_rgb[1]/255, color_rgb[2]/255)
+        
+        # 水印密度设置
+        density = watermark_config.get('density', 5)
+        spacing = 200 / density  # 密度越大，间距越小
+        
+        # 遍历每一页添加水印
+        for i in range(doc.Pages.Count):
+            page = doc.Pages.get_Item(i)
+            
+            # 保存当前画布状态
+            state = page.Canvas.Save()
+            
+            # 设置水印透明度
+            page.Canvas.SetTransparency(0.3)
+            
+            # 根据密度重复添加水印
+            page_width = page.Canvas.Size.Width
+            page_height = page.Canvas.Size.Height
+            
+            # 计算需要添加的水印数量
+            cols = int(page_width / (text_width + spacing)) + 1
+            rows = int(page_height / (text_height + spacing)) + 1
+            
+            for col in range(cols):
+                for row in range(rows):
+                    x = col * (text_width + spacing)
+                    y = row * (text_height + spacing)
+                    
+                    # 保存状态
+                    page_state = page.Canvas.Save()
+                    
+                    # 移动到水印位置
+                    page.Canvas.TranslateTransform(x, y)
+                    
+                    # 旋转角度
+                    page.Canvas.RotateTransform(-45.0)
+                    
+                    # 绘制水印
+                    page.Canvas.DrawString(text, font, PdfSolidBrush(color), 
+                                          PointF(-text_width/2, -text_height/2))
+                    
+                    # 恢复状态
+                    page.Canvas.Restore(page_state)
+            
+            # 恢复原始状态
+            page.Canvas.Restore(state)
+        
+        # 保存加水印后的PDF
+        doc.SaveToFile(output_pdf)
+        doc.Close()
+        return True
+        
+    except Exception as e:
+        st.error(f"添加水印失败: {str(e)}")
+        return False
+
+def pdf_to_png(pdf_path, output_dir, dpi=150):
+    """将PDF转换为PNG图片（每页一张）[citation:3][citation:8]"""
+    try:
+        # 使用pdf2image将PDF转换为图片列表
+        images = convert_from_path(pdf_path, dpi=dpi)
+        
+        # 保存每张图片
+        image_paths = []
+        for i, image in enumerate(images):
+            image_path = os.path.join(output_dir, f"page_{i+1:03d}.png")
+            image.save(image_path, "PNG")
+            image_paths.append(image_path)
+        
+        return image_paths
+    except Exception as e:
+        st.error(f"PDF转PNG失败: {str(e)}")
+        return []
+
+def create_zip_file(files, zip_path):
+    """创建包含多个文件的ZIP包"""
+    try:
+        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for file in files:
+                zipf.write(file, os.path.basename(file))
+        return True
+    except Exception as e:
+        st.error(f"创建ZIP包失败: {str(e)}")
+        return False
 
 def main():
     # 页面标题和返回按钮
     col1, col2 = st.columns([4, 1])
     with col1:
-        st.title("📄 Markdown转HTML工具")
+        st.title("📄 Markdown转HTML/PDF/图片工具")
     with col2:
         if st.button("🏠 返回门户", use_container_width=True):
             st.switch_page("portal.py")
     
     st.markdown("""
     ### 功能说明
-    将Markdown文件转换为美观的HTML文档，支持目录生成、代码高亮、响应式设计。
+    将Markdown文件转换为美观的HTML文档、PDF文件或PNG图片，支持多种格式输出。
+    
+    **新增功能：**
+    1. HTML转PDF - 将生成的HTML转换为PDF文档
+    2. PDF加水印 - 为PDF添加可自定义的水印
+    3. PDF转PNG - 将PDF自动切分成多个PNG图片
     
     **使用步骤：**
     1. 上传Markdown文件
     2. 设置转换选项
     3. 开始转换
-    4. 下载HTML文件或完整ZIP包
+    4. 下载所需格式文件
     """)
     
     # 侧边栏配置
     with st.sidebar:
         st.header("⚙️ 转换设置")
+        
+        # Markdown转换设置
         use_extensions = st.checkbox("启用Markdown扩展", value=True, 
                                     help="启用代码高亮、目录等扩展功能")
         generate_toc = st.checkbox("自动生成目录", value=True,
                                   help="为文档自动生成目录导航")
         include_css = st.checkbox("包含CSS样式", value=True,
                                  help="在HTML中嵌入现代化的CSS样式")
+        
+        st.divider()
+        st.header("📄 PDF转换设置")
+        
+        # PDF转换设置
+        generate_pdf = st.checkbox("生成PDF文件", value=False,
+                                  help="将HTML转换为PDF格式")
+        
+        if generate_pdf:
+            # 水印设置
+            add_watermark = st.checkbox("添加PDF水印", value=False,
+                                       help="为PDF文件添加水印")
+            
+            if add_watermark:
+                watermark_text = st.text_input("水印文字", value="机密文件",
+                                              help="水印显示的文字内容")
+                watermark_color = st.color_picker("水印颜色", "#808080",
+                                                 help="水印文字的颜色")
+                watermark_size = st.slider("水印大小", 20, 100, 48,
+                                          help="水印文字的大小")
+                watermark_density = st.slider("水印密度", 1, 10, 5,
+                                            help="水印的密集程度，值越大越密集")
+            
+            # PNG转换设置
+            convert_to_png = st.checkbox("PDF转PNG图片", value=False,
+                                        help="将PDF转换为PNG图片格式")
+            
+            if convert_to_png:
+                png_dpi = st.slider("图片DPI", 72, 300, 150,
+                                   help="PNG图片的分辨率，值越高越清晰")
     
     # 文件上传
     uploaded_file = st.file_uploader(
@@ -76,10 +255,9 @@ def main():
             with st.spinner("正在转换中..."):
                 try:
                     # 创建临时目录
-                    task_id = f"md_to_html_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+                    task_id = f"md_conversion_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
                     temp_dir = Path("temp") / task_id
-                    html_dir = temp_dir / "html"
-                    html_dir.mkdir(parents=True, exist_ok=True)
+                    temp_dir.mkdir(parents=True, exist_ok=True)
                     
                     # 配置Markdown扩展
                     extensions = []
@@ -125,7 +303,7 @@ def main():
                             padding: 0;
                         }
                         body { 
-                            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+                            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif; 
                             max-width: 800px;
                             margin: 0 auto;
                             padding: 40px;
@@ -232,21 +410,17 @@ def main():
                     
                     # 保存HTML文件
                     html_filename = f"{Path(uploaded_file.name).stem}.html"
-                    html_filepath = html_dir / html_filename
+                    html_filepath = temp_dir / html_filename
                     
                     with open(html_filepath, 'w', encoding='utf-8') as f:
                         f.write(soup.prettify())
                     
-                    # 创建ZIP包
-                    zip_filename = f"{task_id}.zip"
-                    zip_path = temp_dir.parent / zip_filename
+                    st.success("✅ HTML转换成功！")
                     
-                    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-                        zipf.write(html_filepath, arcname=html_filename)
+                    # 结果统计和文件列表
+                    all_files = [html_filepath]
                     
-                    st.success("✅ 转换成功！")
-                    
-                    # 显示结果统计
+                    # 显示HTML结果统计
                     col_stat1, col_stat2, col_stat3 = st.columns(3)
                     with col_stat1:
                         st.metric("输出文件", html_filename)
@@ -255,24 +429,106 @@ def main():
                     with col_stat3:
                         st.metric("目录生成", "✅" if toc_content else "❌")
                     
+                    # PDF转换
+                    pdf_filepath = None
+                    if generate_pdf:
+                        st.subheader("📄 PDF转换")
+                        
+                        # 生成PDF文件名
+                        pdf_filename = f"{Path(uploaded_file.name).stem}.pdf"
+                        pdf_filepath = temp_dir / pdf_filename
+                        
+                        # 将HTML转换为PDF[citation:5]
+                        with st.spinner("正在生成PDF文件..."):
+                            if html_to_pdf(soup.prettify(), pdf_filepath):
+                                pdf_size = pdf_filepath.stat().st_size / 1024
+                                st.success(f"✅ PDF生成成功！文件大小: {pdf_size:.1f} KB")
+                                all_files.append(pdf_filepath)
+                                
+                                # PDF加水印
+                                if add_watermark:
+                                    watermark_config = {
+                                        'text': watermark_text,
+                                        'color': watermark_color,
+                                        'size': watermark_size,
+                                        'density': watermark_density
+                                    }
+                                    
+                                    watermarked_pdf = temp_dir / f"watermarked_{pdf_filename}"
+                                    with st.spinner("正在添加水印..."):
+                                        if add_watermark_to_pdf(str(pdf_filepath), str(watermarked_pdf), watermark_config):
+                                            watermarked_size = watermarked_pdf.stat().st_size / 1024
+                                            st.success(f"✅ 水印添加成功！文件大小: {watermarked_size:.1f} KB")
+                                            all_files.append(watermarked_pdf)
+                                            pdf_filepath = watermarked_pdf  # 后续使用加水印的PDF
+                                
+                                # PDF转PNG[citation:3][citation:8]
+                                if convert_to_png:
+                                    st.subheader("🖼️ PDF转PNG")
+                                    
+                                    # 创建PNG输出目录
+                                    png_dir = temp_dir / "png_images"
+                                    png_dir.mkdir(exist_ok=True)
+                                    
+                                    with st.spinner("正在转换PDF为PNG图片..."):
+                                        png_files = pdf_to_png(str(pdf_filepath), str(png_dir), png_dpi)
+                                        
+                                        if png_files:
+                                            st.success(f"✅ 转换成功！生成 {len(png_files)} 张PNG图片")
+                                            
+                                            # 显示图片预览
+                                            cols = st.columns(min(3, len(png_files)))
+                                            for idx, png_file in enumerate(png_files[:3]):  # 最多显示3张预览
+                                                with cols[idx % 3]:
+                                                    st.image(png_file, caption=f"第{idx+1}页", use_column_width=True)
+                                            
+                                            # 将所有PNG文件添加到文件列表
+                                            all_files.extend(png_files)
+                    
                     # 提供下载
                     st.subheader("📥 下载选项")
-                    col_dl1, col_dl2 = st.columns(2)
                     
-                    with col_dl1:
-                        with open(html_filepath, 'rb') as f:
-                            html_data = f.read()
-                        
-                        st.download_button(
-                            label="⬇️ 下载HTML文件",
-                            data=html_data,
-                            file_name=html_filename,
-                            mime="text/html",
-                            use_container_width=True,
-                            type="primary"
-                        )
+                    # 创建下载列
+                    num_columns = min(4, len(all_files))
+                    cols = st.columns(num_columns)
                     
-                    with col_dl2:
+                    for idx, file_path in enumerate(all_files):
+                        with cols[idx % num_columns]:
+                            file_name = os.path.basename(file_path)
+                            file_size = os.path.getsize(file_path) / 1024
+                            
+                            with open(file_path, 'rb') as f:
+                                file_data = f.read()
+                            
+                            # 确定MIME类型
+                            if file_name.endswith('.html'):
+                                mime_type = "text/html"
+                                label = "⬇️ HTML"
+                            elif file_name.endswith('.pdf'):
+                                mime_type = "application/pdf"
+                                label = "⬇️ PDF"
+                            elif file_name.endswith('.png'):
+                                mime_type = "image/png"
+                                label = "🖼️ PNG"
+                            else:
+                                mime_type = "application/octet-stream"
+                                label = "⬇️ 文件"
+                            
+                            st.download_button(
+                                label=f"{label} ({file_name})",
+                                data=file_data,
+                                file_name=file_name,
+                                mime=mime_type,
+                                help=f"大小: {file_size:.1f} KB",
+                                use_container_width=True
+                            )
+                    
+                    # 创建完整ZIP包
+                    st.subheader("📦 打包下载")
+                    zip_filename = f"{task_id}.zip"
+                    zip_path = temp_dir.parent / zip_filename
+                    
+                    if create_zip_file(all_files, zip_path):
                         with open(zip_path, 'rb') as f:
                             zip_data = f.read()
                         
@@ -281,7 +537,8 @@ def main():
                             data=zip_data,
                             file_name=zip_filename,
                             mime="application/zip",
-                            use_container_width=True
+                            use_container_width=True,
+                            type="primary"
                         )
                     
                     # 预览HTML
@@ -314,6 +571,40 @@ def main():
             ```python
             print("Hello World!")
             ```
+            """)
+            
+        # 新增功能说明
+        with st.expander("🆕 新增功能说明"):
+            st.markdown("""
+            ### 新增功能详细说明
+            
+            **1. HTML转PDF功能**
+            - 使用xhtml2pdf库实现HTML到PDF的转换[citation:5]
+            - 保持HTML的样式和布局
+            - 支持中文字符显示
+            
+            **2. PDF加水印功能**[citation:2]
+            - 支持自定义水印文字
+            - 可设置水印颜色、大小和透明度
+            - 可调节水印密度（密集程度）
+            - 水印倾斜45度显示，覆盖整个页面
+            
+            **3. PDF转PNG功能**[citation:3][citation:8]
+            - 自动将PDF每页转换为单独的PNG图片
+            - 可调节输出图片的DPI（分辨率）
+            - 支持批量处理多页PDF
+            - 保持原始PDF的清晰度
+            
+            **安装所需依赖：**
+            ```bash
+            pip install xhtml2pdf spire.pdf pdf2image pillow
+            ```
+            
+            **注意：**
+            - pdf2image需要系统安装poppler或ImageMagick
+            - 在Linux上: `sudo apt-get install poppler-utils`
+            - 在macOS上: `brew install poppler`
+            - 在Windows上: 从http://blog.alivate.com.au/poppler-windows/ 下载poppler
             """)
 
 if __name__ == "__main__":

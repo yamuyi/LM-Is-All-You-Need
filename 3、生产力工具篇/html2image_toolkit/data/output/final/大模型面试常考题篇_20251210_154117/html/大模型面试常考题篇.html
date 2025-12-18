@@ -1,0 +1,1089 @@
+<html lang="zh-CN">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   大模型面试常考题篇
+  </title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <style>
+   * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif; 
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+            line-height: 1.8;
+            background: white;
+            font-size: 18px;  /* 增加基础字体大小 */
+            color: #333;
+        }
+        
+        h1 {
+            font-size: 32px;  /* 增加h1字体大小 */
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #eaeaea;
+            font-weight: 700;
+            color: #222;
+        }
+        
+        h2 {
+            font-size: 28px;  /* 增加h2字体大小 */
+            margin: 28px 0 18px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        h3 {
+            font-size: 24px;  /* 增加h3字体大小 */
+            margin: 24px 0 16px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        h4 {
+            font-size: 20px;  /* 增加h4字体大小 */
+            margin: 20px 0 14px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        h5, h6 {
+            font-size: 18px;  /* 增加h5,h6字体大小 */
+            margin: 18px 0 12px;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        p {
+            margin: 16px 0;
+            text-align: justify;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        a {
+            color: #0070f3;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        
+        a:hover {
+            border-bottom-color: #0070f3;
+        }
+        
+        /* 代码块样式 */
+        pre {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid #eaeaea;
+            font-size: 16px;  /* 代码字体大小 */
+        }
+        
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background: #f5f5f5;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 16px;  /* 行内代码字体大小 */
+            color: #d63384;
+        }
+        
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: #333;
+            font-size: 16px;  /* 代码块内代码字体大小 */
+        }
+        
+        /* 表格样式 */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            font-size: 17px;  /* 表格字体大小 */
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* 列表样式 */
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+            line-height: 1.8;
+        }
+        
+        /* 引用块样式 */
+        blockquote {
+            border-left: 4px solid #0070f3;
+            margin: 20px 0;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-radius: 0 4px 4px 0;
+            font-size: 17px;  /* 引用块字体大小 */
+        }
+        
+        blockquote p {
+            margin: 0;
+        }
+        
+        /* 图片样式 */
+        img {
+            display: block;
+            margin: 25px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* 目录样式 */
+        .toc-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid #eaeaea;
+        }
+        
+        .toc-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .toc ul ul {
+            padding-left: 20px;
+        }
+        
+        .toc li {
+            margin: 6px 0;
+        }
+        
+        .toc a {
+            color: #555;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            color: #0070f3;
+        }
+        
+        /* 分割线 */
+        hr {
+            border: none;
+            border-top: 2px solid #eaeaea;
+            margin: 30px 0;
+        }
+        
+        /* 脚注 */
+        .footnote {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 内容包装器 */
+        .content-wrapper {
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+        
+        /* 打印优化 */
+        @media print {
+            body {
+                padding: 0;
+                font-size: 16pt;
+            }
+            
+            h1 { font-size: 28pt; }
+            h2 { font-size: 24pt; }
+            h3 { font-size: 20pt; }
+            h4 { font-size: 18pt; }
+            
+            pre, code {
+                font-size: 14pt;
+            }
+            
+            table {
+                font-size: 15pt;
+            }
+        }
+  </style>
+ </head>
+ <body>
+  <div class="content-wrapper">
+   <h1 id="_1">
+    大模型面试常考题篇
+   </h1>
+   <h2 id="llms">
+    LLMs 对比篇
+   </h2>
+   <h3 id="deepseek-v3-kimi-k2">
+    从 DeepSeek-V3 到 Kimi K2：八种现代大语言模型架构设计
+   </h3>
+   <ul>
+    <li>
+     从 DeepSeek-V3 到 Kimi K2：八种现代大语言模型架构设计
+    </li>
+    <li>
+     一、前言
+    </li>
+    <li>
+     二、DeepSeek V3/R1 篇
+    </li>
+    <li>
+     2.1 Multi-Head Latent Attention (MLA)
+    </li>
+    <li>
+     2.1.1 Multi-Head Attention (MHA)
+    </li>
+    <li>
+     2.1.2 Grouped-query Attention (GQA)
+    </li>
+    <li>
+     2.1.2.1 Grouped-query Attention (GQA) 介绍
+    </li>
+    <li>
+     2.1.2.2 Grouped-query Attention (GQA) 核心思想
+    </li>
+    <li>
+     2.1.2.3 Grouped-query Attention (GQA) 优点
+    </li>
+    <li>
+     2.1.2.4 Grouped-query Attention (GQA) 缺点
+    </li>
+    <li>
+     2.1.3 Multi-Head Latent Attention (MLA)
+    </li>
+    <li>
+     2.2 Mixture-of-Experts (MoE)
+    </li>
+    <li>
+     2.2.1 Mixture-of-Experts (MoE) 核心思想 是什么？
+    </li>
+    <li>
+     2.2.2 Mixture-of-Experts (MoE) 优点 是什么？
+    </li>
+    <li>
+     2.3 DeepSeek Summary
+    </li>
+    <li>
+     2.3.1 为什么 6710B DeepSeek-V3 推理效率 优于 405B Llama 3?
+    </li>
+    <li>
+     2.3.2 DeepSeek-V3 和 Llama 3 有什么区别?
+    </li>
+    <li>
+     三、OLMo 2
+    </li>
+    <li>
+     3.1 Normalization Layer Placement
+    </li>
+    <li>
+     3.2 QK-Norm
+    </li>
+    <li>
+     3.3 OLMo 2 Summary
+    </li>
+    <li>
+     四、Gemma 3
+    </li>
+    <li>
+     4.1 介绍 Gemma 3
+    </li>
+    <li>
+     4.2 Gemma 3 还有什么有趣的地方呢？
+    </li>
+    <li>
+     4.3 Sliding Window Attention
+    </li>
+    <li>
+     4.3.1 什么是滑动窗口注意力呢？
+    </li>
+    <li>
+     4.3.2 Normalization Layer Placement in Gemma 3
+    </li>
+    <li>
+     4.3.3 Gemma 3 Summary
+    </li>
+    <li>
+     4.3.4 Bonus: Gemma 3n
+    </li>
+    <li>
+     五、Mistral Small 3.1
+    </li>
+    <li>
+     六、Llama 4
+    </li>
+    <li>
+     6.1 介绍一下 Llama 4？
+    </li>
+    <li>
+     6.2 介绍一下 Llama 4 和 DeepSeek-V3 区别？
+    </li>
+    <li>
+     七、Qwen3
+    </li>
+    <li>
+     7.1 Qwen3
+    </li>
+    <li>
+     7.1.1 介绍一下 Qwen3？
+    </li>
+    <li>
+     7.1.2 介绍一下 Qwen3 0.6B 和 Llama 3 1B 区别？
+    </li>
+    <li>
+     7.1.3 介绍一下 Qwen3 0.6B 优点？
+    </li>
+    <li>
+     7.1.4 介绍一下 Qwen3 0.6B 存在问题？
+    </li>
+    <li>
+     7.2 Qwen3 (MoE)
+    </li>
+    <li>
+     7.2.1 Qwen3 (MoE) 包含哪些版本？
+    </li>
+    <li>
+     7.2.2 为什么像 Qwen3 这样的架构既有常规（密集）又有 MoE（稀疏）变体？
+    </li>
+    <li>
+     7.2.3 Qwen3 常规（密集）又有 MoE（稀疏）变体 都适用哪些场景？
+    </li>
+    <li>
+     7.2.4 DeepSeek-V3 和 Qwen3 235B-A22B 的架构比较？
+    </li>
+    <li>
+     八、SmolLM3
+    </li>
+    <li>
+     8.1 介绍一下 SmolLM3？
+    </li>
+    <li>
+     8.2 No Positional Embeddings (NoPE)
+    </li>
+    <li>
+     九、Kimi 2
+    </li>
+   </ul>
+   <h3 id="llms_1">
+    LLMs 对比篇
+   </h3>
+   <ul>
+    <li>
+     LLMs 对比篇
+    </li>
+    <li>
+     一、谈谈你对当前出现的各种大模型的见解？
+    </li>
+    <li>
+     二、目前大模型常见的 base 模型训练和 chat 模型训练 方式 的区别么？
+    </li>
+    <li>
+     三、llama、baichuan、ChatGLM、Bloom 和 qwen 等开源大模型技术对比篇
+    </li>
+    <li>
+     3.1 llama 系列篇
+    </li>
+    <li>
+     3.1.1 llama 篇
+    </li>
+    <li>
+     3.1.1.1 llama 训练数据 介绍
+    </li>
+    <li>
+     3.1.1.2 llama 模型参数量 介绍
+    </li>
+    <li>
+     3.1.1.3 llama 模型结构 介绍
+    </li>
+    <li>
+     3.1.1.4 llama 训练目标 介绍
+    </li>
+    <li>
+     3.1.1.5 llama tokenizer 介绍
+    </li>
+    <li>
+     3.1.1.6 llama 衍生模型 介绍
+    </li>
+    <li>
+     3.1.1.7 llama 词表扩展: Chinese LLaMA
+    </li>
+    <li>
+     3.2.1 llama2 篇
+    </li>
+    <li>
+     3.2.1 llama2 系列 数据预处理方式？
+    </li>
+    <li>
+     3.2.2 llama2 系列 Tokenizer 处理方式？
+    </li>
+    <li>
+     3.2.3 llama2 系列 Architectural？
+    </li>
+    <li>
+     3.2.4 llama2 系列 content长度？
+    </li>
+    <li>
+     3.2 Mistral 7B 系列篇
+    </li>
+    <li>
+     3.2.1 Mistral 7B Architectural？
+    </li>
+    <li>
+     3.3 Qwen 系列篇
+    </li>
+    <li>
+     3.3.1 Qwen 系列 数据预处理方式？
+    </li>
+    <li>
+     3.3.2 Qwen 系列 Tokenizer 处理方式？
+    </li>
+    <li>
+     3.3.3 Qwen 系列 ARCHITECTURE？
+    </li>
+    <li>
+     3.4 Baichuan 系列篇
+    </li>
+    <li>
+     3.4.1 Baichuan2 篇
+    </li>
+    <li>
+     3.4.1.1 Baichuan2 系列 数据预处理方式？
+    </li>
+    <li>
+     3.4.1.2 Baichuan2 系列 Tokenizer 处理方式？
+    </li>
+    <li>
+     3.4.1.2 Baichuan2 系列 Architecture ？
+    </li>
+    <li>
+     3.5 GLM 系列篇
+    </li>
+    <li>
+     3.5.1 ChatGLM-6B 篇
+    </li>
+    <li>
+     3.5.1.1 ChatGLM-6B 结构特点？
+    </li>
+    <li>
+     3.5.1.2 ChatGLM-6B 训练目标？
+    </li>
+    <li>
+     3.5.1.3 ChatGLM-6B tokenizer？
+    </li>
+    <li>
+     3.6 BLOOM 系列篇
+    </li>
+    <li>
+     3.6.1 BLOOM 篇
+    </li>
+    <li>
+     3.6.1.1 BLOOM 训练数据构建？
+    </li>
+    <li>
+     3.6.1.2 BLOOM 模型参数量？
+    </li>
+    <li>
+     3.6.1.3 BLOOM 模型结构？
+    </li>
+    <li>
+     3.6.1.4 BLOOM 训练目标？
+    </li>
+    <li>
+     3.6.1.5 BLOOM tokenizer?
+    </li>
+    <li>
+     四、分析与总结？
+    </li>
+    <li>
+     4.1 大模型训练共同点？
+    </li>
+    <li>
+     4.2 大模型训练不同点？
+    </li>
+    <li>
+     五、对比
+    </li>
+    <li>
+     5.1 LLaMA、ChatGLM 和 BLOOM 对比
+    </li>
+    <li>
+     5.2 LLaMA、ChatGLM 和 BLOOM 的 tokenizer 比较
+    </li>
+    <li>
+     5.3LLaMA、ChatGLM 和 BLOOM 的 结果 比较
+    </li>
+   </ul>
+   <h3 id="-attention-mask">
+    大模型-attention mask 篇
+   </h3>
+   <ul>
+    <li>
+     大模型-attention mask 篇
+    </li>
+    <li>
+     1、prefix-tuning的prefix tokens是双向注意力吗？
+    </li>
+    <li>
+     2、chatglm1和chatglm2的attention mask是怎么样的？
+    </li>
+    <li>
+     3、llama的attention mask是怎么样的？
+    </li>
+   </ul>
+   <h2 id="qwen">
+    七、大模型—— Qwen系列
+   </h2>
+   <h3 id="qwen3">
+    大模型—— Qwen3 篇
+   </h3>
+   <h4 id="qwen3-rl">
+    Qwen3-RL训练过程详解
+   </h4>
+   <ul>
+    <li>
+     一、引言
+    </li>
+    <li>
+     阶段一：冷启动训练
+    </li>
+    <li>
+     2.1 为什么要进行 数据筛选
+    </li>
+    <li>
+     2.2 Query筛选
+    </li>
+    <li>
+     2.3 Response筛选
+    </li>
+    <li>
+     阶段二：RL推理能力训练
+    </li>
+    <li>
+     阶段三：思考模式融合
+    </li>
+    <li>
+     阶段四：通用RL
+    </li>
+    <li>
+     Strong-to-Weak Distillation
+    </li>
+    <li>
+     后训练效果评估
+    </li>
+   </ul>
+   <h4 id="qwen3_1">
+    Qwen3开源大模型源码分析
+   </h4>
+   <ul>
+    <li>
+     一、Qwen3-Model
+    </li>
+    <li>
+     二、Qwen3Config
+    </li>
+    <li>
+     三、Qwen3Model
+    </li>
+    <li>
+     3.1 Qwen3Model 初始化
+    </li>
+    <li>
+     3.2 Qwen3Model forward
+    </li>
+    <li>
+     3.3 Qwen3DecoderLayer
+    </li>
+    <li>
+     3.4 DecoderLayers 初始化
+    </li>
+    <li>
+     3.5 DecoderLayers forward
+    </li>
+    <li>
+     3.6 Qwen3 Attention
+    </li>
+    <li>
+     3.7 Qwen3Attention forward
+    </li>
+    <li>
+     3.8 Qwen3MLP
+    </li>
+    <li>
+     3.9 Qwen3RMSNorm
+    </li>
+   </ul>
+   <h2 id="deepseek-r1">
+    六、大模型——DeepSeek-R1
+   </h2>
+   <h3 id="deepseek-r1_1">
+    大模型——DeepSeek-R1
+   </h3>
+   <ul>
+    <li>
+     GRPO（Group Relative Policy Optimization）篇
+    </li>
+    <li>
+     DeepSeek-R1-Zero 篇
+    </li>
+    <li>
+     DeepSeek-R1篇
+    </li>
+    <li>
+     DeepSeek-R1 论文解读
+    </li>
+    <li>
+     DeepSeek-R1 篇——如何通过强化学习实现复杂推理
+    </li>
+   </ul>
+   <h2 id="chat-o1">
+    五、大模型——Chat o1 篇
+   </h2>
+   <h3 id="openai-o1">
+    OpenAI o1
+   </h3>
+   <ul>
+    <li>
+     一、Shortcut learning (捷径学习) vs Journey learning (旅程学习)
+    </li>
+    <li>
+     1.1 Shortcut learning (捷径学习)
+    </li>
+    <li>
+     1.1.1 什么是 Shortcut learning (捷径学习)？
+    </li>
+    <li>
+     1.1.2 Shortcut learning (捷径学习) 包含哪些关键特征？
+    </li>
+    <li>
+     1.1.3 Shortcut learning (捷径学习) 优点是什么？
+    </li>
+    <li>
+     1.1.4 Shortcut learning (捷径学习) 缺点是什么？
+    </li>
+    <li>
+     1.2 Journey learning (旅程学习)
+    </li>
+    <li>
+     1.2.1 什么是 Journey learning (旅程学习)？
+    </li>
+    <li>
+     1.2.2 Journey learning (旅程学习) 包含哪些关键特征？
+    </li>
+    <li>
+     1.2.3 Journey learning (旅程学习) 优点是什么？
+    </li>
+    <li>
+     1.3 Shortcut learning (捷径学习) vs Journey learning (旅程学习)
+    </li>
+    <li>
+     二、o1 的长思维链篇
+    </li>
+    <li>
+     2.1 o1 的长思维链是什么样子？
+    </li>
+    <li>
+     2.2 长思维 (Long thought) 是如何工作的？
+    </li>
+    <li>
+     2.3 如何构建长思维？
+    </li>
+    <li>
+     三、过程奖励模型 (PRM)篇
+    </li>
+    <li>
+     3.1 为什么需要 过程奖励模型 (PRM)？
+    </li>
+    <li>
+     3.2 过程奖励模型 (PRM) 作用是什么？
+    </li>
+    <li>
+     3.3 过程奖励模型 (PRM) 目标值定义？
+    </li>
+    <li>
+     3.4 过程奖励模型 (PRM) 思路介绍？
+    </li>
+    <li>
+     3.5 如何训练 过程奖励模型 (PRM) ？
+    </li>
+    <li>
+     3.5.1 介绍一下 ORM 目标函数？
+    </li>
+    <li>
+     3.5.2 介绍一下 PRM 目标函数？
+    </li>
+    <li>
+     3.5.3 如何构建 PRM 训练数据？
+    </li>
+    <li>
+     3.5.4 PRM 训练细节？
+    </li>
+    <li>
+     3.5.4.1 将输入数据转化为模型输入（token id）
+    </li>
+    <li>
+     3.5.4.2 利用 PRM 对每个步骤打分
+    </li>
+    <li>
+     3.5.4.3 完整代码
+    </li>
+    <li>
+     四、on-policy 推理树篇
+    </li>
+    <li>
+     4.1 如何构建 on-policy 推理树？
+    </li>
+    <li>
+     4.2 如何从推理树中推导出 Long Thought？
+    </li>
+    <li>
+     五、如何评估尝试方法？
+    </li>
+    <li>
+     六、如何训练模型？
+    </li>
+    <li>
+     6.1 第一阶段：监督微调（SFT）
+    </li>
+    <li>
+     6.2 第二阶段：直接偏好学习（DPO）
+    </li>
+    <li>
+     七、什么是人类和 AI 协同标注的有效策略？
+    </li>
+   </ul>
+   <h3 id="openai-o1_1">
+    OpenAI o1 面试篇
+   </h3>
+   <ul>
+    <li>
+     OpenAI o1 面试篇
+    </li>
+    <li>
+     Q: o1 的训练方法与之前的模型有何主要区别？
+    </li>
+    <li>
+     Q: o1 的”思考”过程与简单的提示有何不同？
+    </li>
+    <li>
+     Q: 为什么 o1 在推理任务上比之前的模型更强大？
+    </li>
+    <li>
+     Q: o1 如何处理安全性问题？
+    </li>
+    <li>
+     Q: o1 在数学和编程任务上有哪些具体的改进？
+    </li>
+    <li>
+     Q: o1 Mini 与完整版 o1 模型相比如何？
+    </li>
+    <li>
+     Q: o1 是否只擅长数学和 STEM 任务？
+    </li>
+    <li>
+     Q: 给予 o1 更多时间如何增强其推理能力？
+    </li>
+    <li>
+     Q: o1 如何决定在给定问题上花费多少时间进行推理？
+    </li>
+    <li>
+     Q: 当前 o1 思考时间的瓶颈是否由上下文长度决定？
+    </li>
+    <li>
+     Q: o1 在更抽象、创造性领域的表现如何？
+    </li>
+    <li>
+     Q: o1 的改进是否仅仅由训练数据的变化导致的？
+    </li>
+    <li>
+     Q: 科学家如何帮助构建用于科学发现的 AGI？
+    </li>
+    <li>
+     Q: o1 是否表现出意识或自我意识的特征？
+    </li>
+    <li>
+     Q: o1 的推理时间和质量之间是否存在线性关系？
+    </li>
+    <li>
+     Q: 在开发 o1 时，研究人员的第一个”啊哈时刻”是什么？
+    </li>
+    <li>
+     Q: o1 如何处理工具使用以进行自我验证或理智检查？
+    </li>
+    <li>
+     Q: o1 如何处理更主观任务中的文化背景？
+    </li>
+    <li>
+     Q: o1 Mini 如何在更小更便宜的同时实现其性能？
+    </li>
+    <li>
+     Q: 改进 o1 和 o1 Mini 的下一步计划是什么？
+    </li>
+    <li>
+     致谢
+    </li>
+   </ul>
+   <h3 id="scaling-llm-test-timeo1rl">
+    Scaling LLM Test-Time：谁说类o1推理一定要用RL?
+   </h3>
+   <ul>
+    <li>
+     Scaling LLM Test-Time：谁说类o1推理一定要用RL?
+    </li>
+    <li>
+     一、Scaling LLM Test-Time 介绍篇
+    </li>
+    <li>
+     1.1 为什么需要 Scaling LLM Test-Time？
+    </li>
+    <li>
+     1.2 三种 Scaling LLM Test-Time 类型定义？
+    </li>
+    <li>
+     1.3 有哪些 Scaling Test-Time的方法？
+    </li>
+    <li>
+     问题引申
+    </li>
+    <li>
+     二、方法一：纯 Inference Scaling 篇
+    </li>
+    <li>
+     2.1 Inferece Test-Time的统一视角：Proposer &amp; Verifier
+    </li>
+    <li>
+     2.2 Proposer &amp; Verifier 实例：Best-of-N
+    </li>
+    <li>
+     2.3 Process Reward Modeling
+    </li>
+    <li>
+     2.3.1 结果奖励模型(Outcome Reward Model, ORM) 有什么问题？
+    </li>
+    <li>
+     2.3.2 为什么要用 过程奖励模型(Process Reward Model, PRM)？
+    </li>
+    <li>
+     2.3.3 为什么有ORM了还需要PRM？
+    </li>
+    <li>
+     2.3.4 介绍一下 PRM建模：Let’s Verify Step by Step？
+    </li>
+    <li>
+     2.3.5 介绍一下 PRM建模：reward-to-go？
+    </li>
+    <li>
+     2.3.6 OpenAI PRM 建模 和 Math-Shephered PRM 建模 的区别？
+    </li>
+    <li>
+     2.3.7 介绍一下 PRM使用实例？
+    </li>
+    <li>
+     2.3.8 介绍 PRM数据格式？
+    </li>
+    <li>
+     2.4 搜索方法 Process-Searching
+    </li>
+    <li>
+     2.4.1 介绍一下 Best-of-N Weighted？
+    </li>
+    <li>
+     2.4.2 介绍一下 Beam Search PRM？
+    </li>
+    <li>
+     2.4.3 介绍一下 LookAhead Search？
+    </li>
+    <li>
+     2.4.4 对比 Best-of-N Weighted 和 Beam Search PRM 和 LookAhead Search 效能？
+    </li>
+    <li>
+     2.5 不同的PRM search在各难度问题的表现
+    </li>
+    <li>
+     2.6 小结
+    </li>
+    <li>
+     三、方法二：推理能力增强
+    </li>
+    <li>
+     3.1 什么是提议分布 ？
+    </li>
+    <li>
+     3.2 什么是 修改提议分布 ？
+    </li>
+    <li>
+     3.3 什么是 Self-Improve ？
+    </li>
+    <li>
+     3.4 什么是 revision 数据收集 ？
+    </li>
+    <li>
+     3.5 什么是 revision model结果 ？
+    </li>
+    <li>
+     3.6 什么是 verifier 训练方案 ？
+    </li>
+    <li>
+     3.7 小结
+    </li>
+    <li>
+     四、Pretrain Compute V.S. Scaling Test Time
+    </li>
+    <li>
+     4.1 Exchange Rate度量
+    </li>
+    <li>
+     4.2 小模型推理token增加14倍就能战胜大模型？
+    </li>
+    <li>
+     4.3 完整的性能表现
+    </li>
+    <li>
+     4.4 小结
+    </li>
+    <li>
+     五、Scaling LLM Test-Time总结
+    </li>
+   </ul>
+   <h2 id="kimi15">
+    四、大模型——Kimi1.5 篇
+   </h2>
+   <ul>
+    <li>
+     kimi1.5 论文研读
+    </li>
+   </ul>
+   <h2 id="baichuan">
+    三、baichuan篇
+   </h2>
+   <h3 id="baichuan7b13b53bbaichuan2">
+    百川智能baichuan7B、13B、53B、baichuan2
+   </h3>
+   <ul>
+    <li>
+     一、baichuan-7B篇
+    </li>
+    <li>
+     你了解baichuan-7B解构么？介绍一下？
+    </li>
+    <li>
+     baichuan-7B 如何 收集原始数据并 构建 训练数据？
+    </li>
+    <li>
+     baichuan-7B 如何 提高 训练稳定性和吞吐？
+    </li>
+    <li>
+     二、baichuan-13B篇
+    </li>
+    <li>
+     相比于 baichuan-7B，baichuan-13B 的 特点体现在哪里？
+    </li>
+    <li>
+     如何 对 baichuan-13B 进行推理和部署？
+    </li>
+    <li>
+     如何 对 baichuan-13B 进行微调？
+    </li>
+    <li>
+     三、baichuan-53B篇
+    </li>
+    <li>
+     3.1 baichuan-53B 相比于 baichuan-7B 和 baichuan-13B 有哪些优势？
+    </li>
+    <li>
+     3.2 baichuan-53B 如何对 预训练数据 做处理？
+    </li>
+    <li>
+     3.3 baichuan-53B 如何进行 搜索增强？
+    </li>
+    <li>
+     四、baichuan2篇
+    </li>
+    <li>
+     4.1 baichuan2 与 其他大模型 对比
+    </li>
+    <li>
+     五、baichuan 数据构建篇
+    </li>
+    <li>
+     5.1 baichuan 进行微调时，领域数据：通用数据配比？
+    </li>
+   </ul>
+   <h2 id="llama">
+    二、LLaMa 篇
+   </h2>
+   <h3 id="llama_1">
+    LLaMa 篇
+   </h3>
+   <ul>
+    <li>
+     一、相比较于llama而言，llama2有哪些改进，对于llama2是应该如何finetune？
+    </li>
+   </ul>
+   <h2 id="gpt">
+    一、GPT 经验篇
+   </h2>
+   <h3 id="gpt_1">
+    GPT 经验篇
+   </h3>
+   <ul>
+    <li>
+     一、gpt源码past_key_value是干啥的？
+    </li>
+    <li>
+     二、gpt onebyone 每一层怎么输入输出？
+    </li>
+    <li>
+     三、bert和gpt有什么区别
+    </li>
+    <li>
+     四、文本生成的几大预训练任务？
+    </li>
+    <li>
+     五、讲讲T5和Bart的区别，讲讲bart的DAE任务？
+    </li>
+    <li>
+     六、讲讲Bart和Bert的区别？
+    </li>
+    <li>
+     七、gpt3和gpt2的区别？
+    </li>
+   </ul>
+  </div>
+ </body>
+</html>
